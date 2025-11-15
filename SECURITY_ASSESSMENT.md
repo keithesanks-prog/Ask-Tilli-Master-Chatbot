@@ -176,19 +176,36 @@ export JWT_SECRET_KEY="your-strong-secret-key-here"
 
 ## ❌ **NOT ADEQUATELY PROTECTED** (Critical Gaps)
 
-### 8. **Data Access Control** ❌ **MISSING**
-**Protection Level: 2/10**
+### 8. **Data Access Control** ❌ **CRITICAL GAP - BLOCKER FOR PRODUCTION**
+**Protection Level: 2/10** 🔴 **CRITICAL**
+
+**⚠️ CRITICAL ISSUE - MUST BE FIXED BEFORE PRODUCTION ⚠️**
 
 **Critical Issues:**
-- ❌ No checks on whether user should access specific `student_id`
-- ❌ No checks on whether user should access specific `classroom_id`
-- ❌ No validation that educator has permission for grade level
-- ❌ No row-level security (RLS)
-- ❌ Anyone who can authenticate can query any student data
+- ❌ **NO checks on whether user should access specific `student_id`**
+- ❌ **NO checks on whether user should access specific `classroom_id`**
+- ❌ **NO validation that educator has permission for grade level**
+- ❌ **NO row-level security (RLS)**
+- ❌ **🚨 ANYONE who can authenticate can query ANY student data**
+- ❌ **🚨 Cross-school access possible** (multi-tenant isolation missing)
+- ❌ **🚨 Cross-classroom access possible** (no permission checks)
 
-**Impact:**
-- 🔴 **FERPA Violation Risk**: Educators could access student data they shouldn't
-- 🔴 **Data Breach Risk**: Compromised account = access to all data
+**Impact - CRITICAL SECURITY RISKS:**
+- 🔴 **FERPA VIOLATION**: Educators accessing student data they shouldn't = **Legal violation**
+- 🔴 **DATA BREACH**: One compromised educator account = **Access to ALL 6,000 students**
+- 🔴 **PRIVACY VIOLATION**: Student data exposed to unauthorized educators
+- 🔴 **UNICEF COMPLIANCE RISK**: Failure to protect child data = **Compliance violation**
+- 🔴 **MULTI-TENANT ISOLATION FAILURE**: Educators from one school could access another school's students
+
+**Real-World Example:**
+```
+Educator A (School 1) can currently query:
+- Student X (School 1) ✅ Should be allowed
+- Student Y (School 2) ❌ SHOULD BE DENIED but currently allowed
+- Student Z (School 3) ❌ SHOULD BE DENIED but currently allowed
+
+This is a CRITICAL security vulnerability.
+```
 
 **Needed:**
 ```python
@@ -436,7 +453,7 @@ async def verify_data_access(
 | **Error Disclosure** | 8/10 | ✅ Good | - |
 | **Authentication** | 4/10 → 8/10* | ⚠️ Optional | - |
 | **Authorization** | 2/10 | ❌ Missing | - |
-| **Data Access Control** | 2/10 | ❌ Critical Gap | - |
+| **Data Access Control** | 2/10 | 🚨 **CRITICAL BLOCKER** | 🔴 **MUST FIX BEFORE PRODUCTION** |
 | **PII Protection** | 3/10 | ❌ Limited | - |
 | **CORS** | 7/10 | ✅ Configurable | - |
 | **SQL Injection** | N/A | ⚠️ Not Applicable Yet | ⬆️ Pattern detection in place |
@@ -453,18 +470,22 @@ async def verify_data_access(
 
 ## Critical Issues for Production
 
-### 🔴 **MUST FIX BEFORE PRODUCTION:**
+### 🔴 **MUST FIX BEFORE PRODUCTION (BLOCKERS):**
 
-1. **Enable Authentication**
+1. **🚨 IMPLEMENT DATA ACCESS CONTROL** 🔴 **HIGHEST PRIORITY**
+   - ⚠️ **CRITICAL**: Currently ANY authenticated user can access ANY student data
+   - ⚠️ **BLOCKER**: Cannot go to production without this fix
+   - Implement permission checks for `student_id`
+   - Implement permission checks for `classroom_id`
+   - Implement school-level isolation (multi-tenant)
+   - Implement row-level security (RLS)
+   - **See [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) for implementation guide**
+
+2. **Enable Authentication**
    ```bash
    export ENABLE_AUTH=true
    export JWT_SECRET_KEY="<strong-random-secret>"
    ```
-
-2. **Implement Data Access Control**
-   - Check user permissions for student_id
-   - Check user permissions for classroom_id
-   - Implement row-level security
 
 3. **Add PII Redaction**
    - Use Presidio or similar for PII detection
@@ -661,15 +682,18 @@ The Master Agent has **very strong input validation, injection protection, and t
 ### 🔴 **CRITICAL FOR PRODUCTION:**
 
 **Before production:**
-1. ⚠️ Enable authentication (`ENABLE_AUTH=true`)
-2. ❌ Implement data access control (who can access which students)
+1. 🚨 **❌ CRITICAL: Implement data access control** - **BLOCKER** (who can access which students)
+   - **Cannot deploy without this** - Currently ANY authenticated user can access ANY student
+   - This is a **FERPA violation risk** and **data breach risk**
+   - See [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) for implementation guide
+2. ⚠️ Enable authentication (`ENABLE_AUTH=true`)
 3. ❌ Add PII redaction (protect student data in responses)
 4. ✅ Set up HTTPS/TLS (implemented - configure reverse proxy)
 5. ✅ **FERPA-compliant audit logging (implemented - configure retention)** ⬆️ NEW
 6. ✅ **Fail-safe shutdown (implemented)** ⬆️ NEW
 7. ✅ **Security health check (implemented)** ⬆️ NEW
 
-**Current status: Well-protected for development/testing with strong audit logging and fail-safe shutdown. NOT production-ready without enabling authentication, implementing data access control, and adding PII redaction.**
+**Current status: Well-protected for development/testing with strong audit logging and fail-safe shutdown. 🚨 NOT production-ready - CRITICAL BLOCKER: Data access control must be implemented before any production deployment. Currently, any authenticated user can access any student's data, which is a FERPA violation risk and data breach risk.**
 
 ---
 

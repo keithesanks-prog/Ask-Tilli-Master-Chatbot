@@ -1091,10 +1091,14 @@ The Master Agent handles sensitive student assessment data and must be secured b
 9. Add monitoring and alerting
 
 **📚 Documentation:**
+- [BUILD_STATUS.md](BUILD_STATUS.md) - **📊 Current build status and progress**
+- [TECHNICAL_OVERVIEW.md](TECHNICAL_OVERVIEW.md) - **🔧 How the AI agent works - complete explanation**
 - [USER_GUIDE.md](USER_GUIDE.md) - **Quick reference guide for service management commands**
 - [SERVICE_MANAGEMENT.md](SERVICE_MANAGEMENT.md) - **Service management & fail-safe shutdown (detailed guide)**
 - [SECURITY.md](SECURITY.md) - Comprehensive threat analysis
 - [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) - Detailed protection assessment
+- [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) - **🚨 CRITICAL: Data access control implementation guide (IAM vs Application-level authorization)**
+- [CRITICAL_ISSUES_IMPLEMENTATION.md](CRITICAL_ISSUES_IMPLEMENTATION.md) - **🚨 CRITICAL: Step-by-step guide to fix critical security issues before production**
 - [AUTHENTICATION_OPTIONS.md](AUTHENTICATION_OPTIONS.md) - IAM/authentication options
 - [PRODUCTION_SECURITY.md](PRODUCTION_SECURITY.md) - **Production security guide (7 schools, 6,000 students)**
 - [HARMFUL_CONTENT_DETECTION.md](HARMFUL_CONTENT_DETECTION.md) - **Harmful content detection & alerting (UNICEF child protection)**
