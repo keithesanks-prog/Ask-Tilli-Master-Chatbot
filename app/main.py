@@ -225,7 +225,7 @@ async def root():
 
 @app.get("/health", response_model=HealthResponse, tags=["health"])
 @limiter.limit("100/minute")
-async def health_check() -> HealthResponse:
+async def health_check(request: Request) -> HealthResponse:
     """
     Basic health check endpoint.
     
@@ -240,7 +240,7 @@ async def health_check() -> HealthResponse:
 
 @app.get("/health/security", response_model=SecurityHealthResponse, tags=["health"])
 @limiter.limit("10/minute")  # Lower rate limit for security endpoint
-async def security_health_check() -> SecurityHealthResponse:
+async def security_health_check(request: Request) -> SecurityHealthResponse:
     """
     Comprehensive security health check endpoint.
     

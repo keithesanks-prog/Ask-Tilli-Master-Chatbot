@@ -1,3 +1,40 @@
+## Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+## Virtual environments
+.venv/
+venv/
+ENV/
+
+## IDE/editor
+.vscode/
+.idea/
+*.iml
+
+## OS files
+Thumbs.db
+.DS_Store
+
+## Local/dev artifacts
+*.log
+*.csv
+.tmp_*
+*.sqlite
+*.db
+
 # Python
 __pycache__/
 *.py[cod]

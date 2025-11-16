@@ -87,12 +87,13 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             response.headers["Strict-Transport-Security"] = hsts_header
         
         # Content Security Policy
+        # Allow Swagger UI/CDN assets so /docs renders (cdn.jsdelivr.net, unpkg.com)
         csp = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
-            "style-src 'self' 'unsafe-inline'; "
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; "
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
             "img-src 'self' data: https:; "
-            "font-src 'self' data:; "
+            "font-src 'self' data: https:; "
             "connect-src 'self' https://generativelanguage.googleapis.com; "
             "frame-ancestors 'none'; "
             "base-uri 'self'; "
@@ -125,11 +126,19 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         )
         response.headers["Permissions-Policy"] = permissions_policy
         
-        # Remove server header (hide server information)
-        response.headers.pop("Server", None)
+        # Remove server-identifying headers where possible
+        try:
+            if "Server" in response.headers:
+                del response.headers["Server"]
+        except Exception:
+            # Some response types may not allow deletion; ignore silently
+            pass
         
-        # X-Powered-By header (if not already removed)
-        response.headers.pop("X-Powered-By", None)
+        try:
+            if "X-Powered-By" in response.headers:
+                del response.headers["X-Powered-By"]
+        except Exception:
+            pass
     
     def _build_hsts_header(self) -> str:
         """
