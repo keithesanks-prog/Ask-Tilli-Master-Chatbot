@@ -1189,6 +1189,45 @@ Helpers in `app/services/csv_data.py`:
 - `compute_prepost_comparison(rows)` — aggregated PRE vs POST metrics
 - `build_comparison_summary(pre_rows, post_rows)` — concise object for LLM context
 
+### Temporarily Enabling/Disabling Data Sources (EMT/REAL/SEL) — NEW
+
+You can toggle specific sources off without code changes using an environment variable. This is useful if a source is temporarily unavailable (e.g., EMT).
+
+- Disable EMT only:
+  - Windows PowerShell:
+    ```powershell
+    $env:DISABLE_SOURCES = 'EMT'
+    ```
+  - Linux/macOS:
+    ```bash
+    export DISABLE_SOURCES="EMT"
+    ```
+  - systemd:
+    ```
+    [Service]
+    Environment=DISABLE_SOURCES=EMT
+    ```
+    Then:
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl restart master-agent
+    ```
+- Disable multiple sources:
+  ```bash
+  export DISABLE_SOURCES="EMT,REAL"
+  ```
+- Re-enable a source:
+  - Remove it from `DISABLE_SOURCES` or unset the variable:
+    ```bash
+    unset DISABLE_SOURCES         # Linux/macOS
+    # or
+    Remove-Item Env:DISABLE_SOURCES  # PowerShell
+    ```
+
+Behavior:
+- Disabled sources are not selected by the router and are not fetched/added to the LLM summary.
+- The “include all by default” logic respects the disable list.
+
 ## Data Models
 
 ### Assessment Data Sources
