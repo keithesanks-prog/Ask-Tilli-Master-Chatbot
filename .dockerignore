@@ -1,0 +1,16 @@
+.git
+.gitignore
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+tests/
+deployment/
+data/*.csv
+!.keep
+.DS_Store
+Thumbs.db
+
+
