@@ -1257,22 +1257,22 @@ The Master Agent handles sensitive student assessment data and must be secured b
 9. Add monitoring and alerting
 
 **📚 Documentation Map (What each file contains):**
+- [AUDIT_LOGGING.md](AUDIT_LOGGING.md) — FERPA/UNICEF audit logging requirements and storage strategy.
+- [AUTHENTICATION_OPTIONS.md](AUTHENTICATION_OPTIONS.md) — IAM choices (OIDC/JWT, gateways), trade‑offs, and rollout.
 - [BUILD_STATUS.md](BUILD_STATUS.md) — Project progress, completed items, and pending work.
-- [TECHNICAL_OVERVIEW.md](TECHNICAL_OVERVIEW.md) — End‑to‑end architecture, flows, and component deep‑dive.
-- [USER_GUIDE.md](USER_GUIDE.md) — How to run/manage the service, commands, and API usage examples.
-- [SERVICE_MANAGEMENT.md](SERVICE_MANAGEMENT.md) — systemd/deployment commands and fail‑safe shutdown details.
+- [CRITICAL_ISSUES_IMPLEMENTATION.md](CRITICAL_ISSUES_IMPLEMENTATION.md) — Step‑by‑step fixes required before production.
+- [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) — Authorization model design; how to restrict who can read which data.
+- [EXTERNAL_API_SECURITY.md](EXTERNAL_API_SECURITY.md) — Securing Gemini/API usage, keys, and rate limiting.
+- [HARMFUL_CONTENT_DETECTION.md](HARMFUL_CONTENT_DETECTION.md) — Child‑safety detection, sensitivity tuning, and alerting.
+- [HEALTH_CHECK.md](HEALTH_CHECK.md) — Health/security check contract; using `?format=summary|html`.
+- [KNOWN_KEY_VALUES.md](KNOWN_KEY_VALUES.md) — Canonical keys/fields across data and responses.
+- [PRODUCTION_SECURITY.md](PRODUCTION_SECURITY.md) — Hardening checklist for multi‑school production use.
 - [SECURITY.md](SECURITY.md) — Threat model, protections, and security posture.
 - [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) — Detailed assessment of protections with scoring.
-- [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) — Authorization model design; how to restrict who can read which data.
-- [CRITICAL_ISSUES_IMPLEMENTATION.md](CRITICAL_ISSUES_IMPLEMENTATION.md) — Step‑by‑step fixes required before production.
-- [AUTHENTICATION_OPTIONS.md](AUTHENTICATION_OPTIONS.md) — IAM choices (OIDC/JWT, gateways), trade‑offs, and rollout.
-- [PRODUCTION_SECURITY.md](PRODUCTION_SECURITY.md) — Hardening checklist for multi‑school production use.
-- [HARMFUL_CONTENT_DETECTION.md](HARMFUL_CONTENT_DETECTION.md) — Child‑safety detection, sensitivity tuning, and alerting.
-- [AUDIT_LOGGING.md](AUDIT_LOGGING.md) — FERPA/UNICEF audit logging requirements and storage strategy.
-- [EXTERNAL_API_SECURITY.md](EXTERNAL_API_SECURITY.md) — Securing Gemini/API usage, keys, and rate limiting.
-- [HEALTH_CHECK.md](HEALTH_CHECK.md) — Health/security check contract; using `?format=summary|html`.
+- [SERVICE_MANAGEMENT.md](SERVICE_MANAGEMENT.md) — systemd/deployment commands and fail‑safe shutdown details.
+- [TECHNICAL_OVERVIEW.md](TECHNICAL_OVERVIEW.md) — End‑to‑end architecture, flows, and component deep‑dive.
 - [TLS_CONFIGURATION.md](TLS_CONFIGURATION.md) — TLS/HTTPS setup (reverse proxy, HSTS/CSP).
-- [KNOWN_KEY_VALUES.md](KNOWN_KEY_VALUES.md) — Canonical keys/fields across data and responses.
+- [USER_GUIDE.md](USER_GUIDE.md) — How to run/manage the service, commands, and API usage examples.
 
 ## Development Notes
 
