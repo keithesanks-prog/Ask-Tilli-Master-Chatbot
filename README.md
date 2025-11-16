@@ -624,6 +624,19 @@ master-agent/
 
 ### Running the Service
 
+#### Test Mode
+
+Enable Test Mode to exercise the system with safe mocks and deterministic behavior:
+
+```bash
+export TEST_MODE=true
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Endpoints:
+- GET `/test/config` — current test mode configuration and behaviors
+- POST `/test/self` — runs a short self-test battery (sanitization, harmful content detection, LLM mock path, audit log smoke)
+
 #### Development Mode
 
 Start the FastAPI server for development:

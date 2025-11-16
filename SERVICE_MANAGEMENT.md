@@ -471,3 +471,4 @@ async def emergency_shutdown(current_user: dict = Depends(require_admin)):
 **Document Version:** 1.0  
 **Last Updated:** 2024
 
+

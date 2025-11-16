@@ -125,3 +125,4 @@ def require_role(allowed_roles: list[str]):
 require_educator = require_role(["educator", "admin"])
 require_admin = require_role(["admin"])
 
+

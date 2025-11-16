@@ -213,3 +213,4 @@ async def lifespan(app):
     
     logger.info("Service shutdown complete")
 
+

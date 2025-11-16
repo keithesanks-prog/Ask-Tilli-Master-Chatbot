@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
 from .models.query_models import AskRequest, AskResponse, HealthResponse, SecurityHealthResponse
-from .routers import agent, query, prompt_eval
+from .routers import agent, query, prompt_eval, test
 from .services.data_router import DataRouter
 from .services.llm_engine import LLMEngine
 from .middleware.rate_limit import limiter, _rate_limit_exceeded_handler
@@ -110,6 +110,7 @@ llm_engine = LLMEngine()
 app.include_router(agent.router)
 app.include_router(query.router)
 app.include_router(prompt_eval.router)
+app.include_router(test.router)
 
 
 @app.post("/ask", response_model=AskResponse, tags=["ask"])

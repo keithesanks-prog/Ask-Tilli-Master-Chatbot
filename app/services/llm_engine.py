@@ -8,6 +8,7 @@ import json
 import os
 import logging
 from .security import InputSanitizer, PromptInjectionDetector
+from .test_mode import TestMode
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +53,10 @@ class LLMEngine:
         self.gemini_enabled = False
         
         # Initialize Gemini API client if available and API key is configured
-        if provider == "gemini" and GEMINI_AVAILABLE:
+        if TestMode.is_enabled():
+            logger.info("TEST_MODE is enabled. LLMEngine will use mock responses.")
+            self.gemini_enabled = False
+        elif provider == "gemini" and GEMINI_AVAILABLE:
             api_key = os.getenv("GEMINI_API_KEY")
             if api_key:
                 try:
