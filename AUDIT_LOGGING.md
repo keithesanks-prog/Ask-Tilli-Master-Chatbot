@@ -314,6 +314,36 @@ audit_logger.log_harmful_content(
 
 ## Configuration
 
+- Pluggable sinks (NEW)
+
+You can forward every audit event to external systems by enabling sinks via environment variables.
+
+Supported sinks:
+- Splunk HEC
+
+Configuration:
+```
+# Enable one or more sinks (comma-separated): splunk
+AUDIT_SINKS=splunk
+
+# Splunk HEC
+SPLUNK_HEC_URL=https://splunk.example.com:8088/services/collector
+SPLUNK_HEC_TOKEN=<hec-token>
+SPLUNK_SOURCE=master-agent
+SPLUNK_SOURCETYPE=json
+# optional
+SPLUNK_INDEX=security
+
+# Networking
+AUDIT_HTTP_TIMEOUT=5
+AUDIT_HTTP_RETRIES=2
+```
+
+Notes:
+- Forwarding is fire-and-forget with short timeouts and minimal retries so audits never block request handling.
+- Sensitive fields are already minimized; do not include full question texts to avoid PII.
+- Keep local stdout/file logging enabled for defense in depth and incident triage.
+
 ### **Environment Variables**
 
 ```bash

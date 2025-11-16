@@ -18,6 +18,8 @@ import logging
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
 from enum import Enum
+import asyncio
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +62,21 @@ class FERPAAuditLogger:
         self.log_file = os.getenv("AUDIT_LOG_FILE", None)
         self.log_to_file = self.log_file is not None
         self.log_to_stdout = os.getenv("AUDIT_LOG_STDOUT", "true").lower() == "true"
+        # Pluggable external sinks (comma-separated): splunk,otlp,syslog,future
+        self.enabled_sinks = {
+            sink.strip().lower()
+            for sink in os.getenv("AUDIT_SINKS", "").split(",")
+            if sink.strip()
+        }
+        # Splunk HEC configuration
+        self.splunk_hec_url = os.getenv("SPLUNK_HEC_URL")
+        self.splunk_hec_token = os.getenv("SPLUNK_HEC_TOKEN")
+        self.splunk_source = os.getenv("SPLUNK_SOURCE", "master-agent")
+        self.splunk_sourcetype = os.getenv("SPLUNK_SOURCETYPE", "json")
+        self.splunk_index = os.getenv("SPLUNK_INDEX", None)
+        # Network timeouts
+        self.http_timeout_seconds = float(os.getenv("AUDIT_HTTP_TIMEOUT", "5"))
+        self.http_max_retries = int(os.getenv("AUDIT_HTTP_RETRIES", "2"))
         
         if not enabled:
             logger.warning("Audit logging is disabled")
@@ -386,11 +403,72 @@ class FERPAAuditLogger:
                 extra={"audit": audit_entry}
             )
         
-        # TODO: Integrate with production audit log storage:
-        # - AWS CloudTrail + S3 (immutable)
-        # - Google Cloud Audit Logs (immutable)
-        # - Dedicated audit database (append-only, encrypted)
-        # - Syslog (immutable, centralized)
-        # - SIEM system (Splunk, ELK, etc.)
+        # External sinks
+        try:
+            if "splunk" in self.enabled_sinks:
+                self._forward_to_splunk(audit_entry)
+        except Exception as e:
+            logger.error(f"Failed to forward audit to external sink: {e}")
+
+    def _forward_to_splunk(self, audit_entry: Dict[str, Any]):
+        """
+        Forward audit events to Splunk via HTTP Event Collector (HEC).
+        Non-blocking with short timeouts and minimal retries to avoid impacting request latency.
+        """
+        if not (self.splunk_hec_url and self.splunk_hec_token):
+            logger.warning("Splunk sink enabled but SPLUNK_HEC_URL or SPLUNK_HEC_TOKEN not set")
+            return
+        
+        # Prepare event payload according to Splunk HEC json format
+        payload: Dict[str, Any] = {
+            "time": datetime.now(timezone.utc).timestamp(),
+            "host": os.getenv("HOSTNAME", "master-agent"),
+            "source": self.splunk_source,
+            "sourcetype": self.splunk_sourcetype,
+            "event": audit_entry,
+        }
+        if self.splunk_index:
+            payload["index"] = self.splunk_index
+        
+        headers = {
+            "Authorization": f"Splunk {self.splunk_hec_token}",
+            "Content-Type": "application/json",
+        }
+        
+        async def _send_once():
+            async with httpx.AsyncClient(timeout=self.http_timeout_seconds, verify=True) as client:
+                resp = await client.post(self.splunk_hec_url, json=payload, headers=headers)
+                resp.raise_for_status()
+        
+        async def _send_with_retries():
+            attempts = 0
+            last_err = None
+            while attempts <= self.http_max_retries:
+                try:
+                    await _send_once()
+                    return
+                except Exception as e:
+                    last_err = e
+                    attempts += 1
+            logger.error(f"Splunk HEC forwarding failed after retries: {last_err}")
+        
+        # Fire-and-forget task; don't block the main request path
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.create_task(_send_with_retries())
+            else:
+                loop.run_until_complete(_send_with_retries())
+        except RuntimeError:
+            # If no loop is available (unlikely in FastAPI), fallback to synchronous send with timeout
+            try:
+                httpx.post(
+                    self.splunk_hec_url,
+                    json=payload,
+                    headers=headers,
+                    timeout=self.http_timeout_seconds
+                )
+            except Exception as e:
+                logger.error(f"Splunk HEC forwarding failed (sync fallback): {e}")
 
 
