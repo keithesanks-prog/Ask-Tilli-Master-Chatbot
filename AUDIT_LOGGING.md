@@ -358,6 +358,46 @@ Notes:
 - Sensitive fields are already minimized; do not include full question texts to avoid PII.
 - Keep local stdout/file logging enabled for defense in depth and incident triage.
 
+### Secret handling and environment variables (important)
+
+Placeholders shown in examples (e.g., `OPENSEARCH_PASSWORD=<password>`, `SPLUNK_HEC_TOKEN=<hec-token>`) are NOT literals. Do not hardcode real credentials in code, config files in source control, or documentation. Always inject secrets at runtime via environment variables provided by your platform or a secrets manager.
+
+Set secrets via your environment:
+- Windows PowerShell
+  ```powershell
+  $env:OPENSEARCH_PASSWORD = '<your-secret>'
+  $env:SPLUNK_HEC_TOKEN = '<your-secret>'
+  ```
+- Linux/macOS
+  ```bash
+  export OPENSEARCH_PASSWORD="<your-secret>"
+  export SPLUNK_HEC_TOKEN="<your-secret>"
+  ```
+- systemd (production)
+  ```
+  [Service]
+  Environment=OPENSEARCH_PASSWORD=<your-secret>
+  Environment=SPLUNK_HEC_TOKEN=<your-secret>
+  ```
+  Then:
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl restart master-agent
+  ```
+
+Best practice: use a centralized secrets manager
+- AWS Secrets Manager / Parameter Store (+ KMS), Azure Key Vault, GCP Secret Manager, or HashiCorp Vault.
+- Configure your orchestrator (Kubernetes External Secrets, CI/CD, systemd pre-start hook) to fetch secrets at startup and inject them as environment variables.
+- Rotate secrets regularly and grant least-privilege read access to this service only.
+
+Anti‑patterns to avoid:
+- Committing secrets in Git (code, .env files, docs, YAML).
+- Printing secrets in logs or error messages.
+- Baking secrets into container images or build artifacts.
+
+Verification:
+- On start, the service reads credentials from environment variables (e.g., `OPENSEARCH_PASSWORD`, `SPLUNK_HEC_TOKEN`). If a variable is missing, forwarding for that sink is skipped with a warning. This prevents crashes while still protecting secrets from being hardcoded.
+
 ### **Environment Variables**
 
 ```bash
