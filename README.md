@@ -21,8 +21,9 @@ graph TB
         
         subgraph "Routers"
             AgentRouter[Agent Router<br/>/agent/ask<br/>POST /ask]
-            QueryRouter[Query Router<br/>/query/*]
+            QueryRouter[Query Router<br/>/query/*<br/>GET /query/prepost]
             EvalRouter[Prompt Eval Router<br/>/prompt-eval/receive]
+            DebugRouter[Debug Router<br/>/debug/pre-post]
         end
         
         subgraph "Request/Response Models"
@@ -47,6 +48,10 @@ graph TB
             ResponseGenerator[Response Generator<br/>generate_response]
         end
         
+        subgraph "CSV Integration (Program-Level Aggregation)"
+            CSVService[CSV Data Service<br/>csv_data.py]
+        end
+        
         subgraph "Evaluation Service"
             PromptEval[Prompt Eval Service<br/>prompt_eval.py]
             EvalProcessor[Evaluation Processor]
@@ -62,6 +67,10 @@ graph TB
         REALDB[(REAL Data Table<br/>Remote Learning<br/>Assessment Results)]
         EMTDB[(EMT Data Table<br/>Emotion Matching<br/>Task Results)]
         SELDB[(SEL Data Table<br/>Social-Emotional<br/>Learning Results)]
+    end
+    
+    subgraph "Program Data Exports"
+        CSVExport[(CSV Export<br/>scores_export_*.csv)]
     end
     
     subgraph "Data Sources - Input Systems"
@@ -84,6 +93,7 @@ graph TB
     FastAPI --> AgentRouter
     FastAPI --> QueryRouter
     FastAPI --> EvalRouter
+    FastAPI --> DebugRouter
     
     AgentRouter --> AskRequest
     EvalRouter --> EvalModels
@@ -93,6 +103,10 @@ graph TB
     AgentRouter -->|determine_data_sources<br/>fetch_data| DataRouter
     AgentRouter -->|generate_response| LLMEngine
     EvalRouter -->|process_evaluation| PromptEval
+    %% Comparison-aware path
+    AgentRouter -.->|if comparison intent| CSVService
+    QueryRouter -->|/query/prepost| CSVService
+    DebugRouter -->|/debug/pre-post| CSVService
     
     %% Service Layer internal connections
     DataRouter --> SourceSelector
@@ -100,6 +114,7 @@ graph TB
     LLMEngine --> PromptBuilder
     LLMEngine --> ResponseGenerator
     PromptEval --> EvalProcessor
+    CSVService --> CSVExport
     
     %% Service to External Services
     LLMEngine -->|HTTPS API Call<br/>Prompt + Data| GeminiAPI
@@ -136,6 +151,8 @@ graph TB
     class REALDB,EMTDB,SELDB,REALInput,EMTInput,SELInput dataStyle
     class GeminiAPI externalStyle
     class EvaluationsCSV,Logs outputStyle
+    class CSVService serviceStyle
+    class CSVExport dataStyle
 ```
 
 ### System Flow Diagram
