@@ -190,12 +190,12 @@ graph TB
     DataRouter -->|Logs| Logs
     
     %% Styling
-    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
-    classDef apiStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef serviceStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    classDef dataStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    classDef externalStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-    classDef outputStyle fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#111111
+    classDef apiStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#111111
+    classDef serviceStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#111111
+    classDef dataStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#111111
+    classDef externalStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#111111
+    classDef outputStyle fill:#f1f8e9,stroke:#689f38,stroke-width:2px,color:#111111
     
     class Educator,EvalTool clientStyle
     class FastAPI,AgentRouter,QueryRouter,EvalRouter,AskRequest,QueryModels,EvalModels apiStyle
@@ -242,10 +242,10 @@ graph TB
     EvalService --> |Writes| CSV[Evaluations CSV]
     
     %% Styling
-    classDef inputStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef processStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef dataStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef outputStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef inputStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px,color:#111111
+    classDef processStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#111111
+    classDef dataStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#111111
+    classDef outputStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#111111
     
     class Educator,REALInput,EMTInput,SELInput inputStyle
     class API,Router,LLMEngine,Prompt,Gemini,EvalEndpoint,EvalService processStyle
