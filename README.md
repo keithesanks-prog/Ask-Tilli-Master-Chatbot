@@ -639,6 +639,42 @@ master-agent/
    - Create a new API key
    - Set it as an environment variable or add to your `.env` file
 
+#### Where to enter the API key (GEMINI_API_KEY)
+
+Set the environment variable in one of these places:
+
+- Windows PowerShell (current session):
+  ```powershell
+  $env:GEMINI_API_KEY = '<your-api-key-here>'
+  ```
+- Linux/macOS shell (current session):
+  ```bash
+  export GEMINI_API_KEY="<your-api-key-here>"
+  ```
+- systemd service (production):
+  - Edit `deployment/master-agent.service` and add:
+    ```
+    [Service]
+    Environment=GEMINI_API_KEY=<your-api-key-here>
+    ```
+  - Then reload and restart:
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl restart master-agent
+    ```
+- .env file (if you use a process manager that loads it):
+  ```
+  GEMINI_API_KEY=<your-api-key-here>
+  ```
+
+Verification:
+- Start the app and check logs; if the key is set, the service will use the real Gemini API instead of mock responses.
+  - If you see “GEMINI_API_KEY not found… Using mock responses.” the variable was not applied to the process.
+
+Security tips:
+- Do not commit keys to Git.
+- Prefer secret stores in production (e.g., Azure Key Vault, AWS Secrets Manager, GCP Secret Manager). See `EXTERNAL_API_SECURITY.md`.
+
 ### Running the Service
 
 #### Test Mode
