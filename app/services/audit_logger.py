@@ -74,6 +74,19 @@ class FERPAAuditLogger:
         self.splunk_source = os.getenv("SPLUNK_SOURCE", "master-agent")
         self.splunk_sourcetype = os.getenv("SPLUNK_SOURCETYPE", "json")
         self.splunk_index = os.getenv("SPLUNK_INDEX", None)
+        # Generic Webhook sink (works with Logstash/Vector/Fluent Bit/Loki gateways)
+        self.webhook_url = os.getenv("AUDIT_WEBHOOK_URL")
+        self.webhook_headers_raw = os.getenv("AUDIT_WEBHOOK_HEADERS", "{}")
+        try:
+            self.webhook_headers = json.loads(self.webhook_headers_raw) if self.webhook_headers_raw else {}
+        except Exception:
+            self.webhook_headers = {}
+        # OpenSearch/Elasticsearch sink
+        self.os_url = os.getenv("OPENSEARCH_URL")  # e.g., https://opensearch:9200
+        self.os_index = os.getenv("OPENSEARCH_INDEX", "audits")
+        self.os_username = os.getenv("OPENSEARCH_USERNAME")
+        self.os_password = os.getenv("OPENSEARCH_PASSWORD")
+        self.os_verify = os.getenv("OPENSEARCH_TLS_VERIFY", "true").lower() == "true"
         # Network timeouts
         self.http_timeout_seconds = float(os.getenv("AUDIT_HTTP_TIMEOUT", "5"))
         self.http_max_retries = int(os.getenv("AUDIT_HTTP_RETRIES", "2"))
@@ -407,6 +420,10 @@ class FERPAAuditLogger:
         try:
             if "splunk" in self.enabled_sinks:
                 self._forward_to_splunk(audit_entry)
+            if "webhook" in self.enabled_sinks:
+                self._forward_to_webhook(audit_entry)
+            if "opensearch" in self.enabled_sinks or "elasticsearch" in self.enabled_sinks:
+                self._forward_to_opensearch(audit_entry)
         except Exception as e:
             logger.error(f"Failed to forward audit to external sink: {e}")
 
@@ -470,5 +487,89 @@ class FERPAAuditLogger:
                 )
             except Exception as e:
                 logger.error(f"Splunk HEC forwarding failed (sync fallback): {e}")
+
+    def _forward_to_webhook(self, audit_entry: Dict[str, Any]):
+        """
+        Forward audit events to a generic webhook endpoint (e.g., Logstash HTTP input, Vector, Fluent Bit).
+        """
+        if not self.webhook_url:
+            logger.warning("Webhook sink enabled but AUDIT_WEBHOOK_URL not set")
+            return
+        headers = {"Content-Type": "application/json"}
+        headers.update(self.webhook_headers or {})
+        payload = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "source": "master-agent",
+            "event": audit_entry,
+        }
+        async def _send_once():
+            async with httpx.AsyncClient(timeout=self.http_timeout_seconds, verify=True) as client:
+                resp = await client.post(self.webhook_url, json=payload, headers=headers)
+                resp.raise_for_status()
+        async def _send_with_retries():
+            attempts = 0
+            last_err = None
+            while attempts <= self.http_max_retries:
+                try:
+                    await _send_once()
+                    return
+                except Exception as e:
+                    last_err = e
+                    attempts += 1
+            logger.error(f"Webhook forwarding failed after retries: {last_err}")
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.create_task(_send_with_retries())
+            else:
+                loop.run_until_complete(_send_with_retries())
+        except RuntimeError:
+            try:
+                httpx.post(self.webhook_url, json=payload, headers=headers, timeout=self.http_timeout_seconds)
+            except Exception as e:
+                logger.error(f"Webhook forwarding failed (sync fallback): {e}")
+
+    def _forward_to_opensearch(self, audit_entry: Dict[str, Any]):
+        """
+        Forward audit events to OpenSearch/Elasticsearch index using the _doc API.
+        """
+        if not self.os_url:
+            logger.warning("OpenSearch sink enabled but OPENSEARCH_URL not set")
+            return
+        url = f"{self.os_url.rstrip('/')}/{self.os_index}/_doc"
+        auth = None
+        if self.os_username and self.os_password:
+            auth = (self.os_username, self.os_password)
+        doc = {
+            "@timestamp": datetime.now(timezone.utc).isoformat(),
+            "source": "master-agent",
+            **audit_entry
+        }
+        async def _send_once():
+            async with httpx.AsyncClient(timeout=self.http_timeout_seconds, verify=self.os_verify, auth=auth) as client:
+                resp = await client.post(url, json=doc)
+                resp.raise_for_status()
+        async def _send_with_retries():
+            attempts = 0
+            last_err = None
+            while attempts <= self.http_max_retries:
+                try:
+                    await _send_once()
+                    return
+                except Exception as e:
+                    last_err = e
+                    attempts += 1
+            logger.error(f"OpenSearch forwarding failed after retries: {last_err}")
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.create_task(_send_with_retries())
+            else:
+                loop.run_until_complete(_send_with_retries())
+        except RuntimeError:
+            try:
+                httpx.post(url, json=doc, timeout=self.http_timeout_seconds, auth=auth, verify=self.os_verify)
+            except Exception as e:
+                logger.error(f"OpenSearch forwarding failed (sync fallback): {e}")
 
 

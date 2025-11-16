@@ -319,20 +319,34 @@ audit_logger.log_harmful_content(
 You can forward every audit event to external systems by enabling sinks via environment variables.
 
 Supported sinks:
-- Splunk HEC
+- Splunk HEC (proprietary, widely used; simple HTTPS JSON)
+- Webhook (generic HTTP POST; works with Logstash HTTP input, Vector, Fluent Bit, custom receivers)
+- OpenSearch/Elasticsearch (open-source stack)
 
 Configuration:
 ```
-# Enable one or more sinks (comma-separated): splunk
-AUDIT_SINKS=splunk
+# Enable one or more sinks (comma-separated): splunk,webhook,opensearch
+AUDIT_SINKS=splunk,webhook,opensearch
 
-# Splunk HEC
+# Splunk HEC (optional)
 SPLUNK_HEC_URL=https://splunk.example.com:8088/services/collector
 SPLUNK_HEC_TOKEN=<hec-token>
 SPLUNK_SOURCE=master-agent
 SPLUNK_SOURCETYPE=json
 # optional
 SPLUNK_INDEX=security
+
+# Webhook (optional)
+AUDIT_WEBHOOK_URL=https://log-collector.example.com/ingest
+# Optional JSON headers (string)
+AUDIT_WEBHOOK_HEADERS={"X-Api-Key":"abc123","X-Source":"master-agent"}
+
+# OpenSearch/Elasticsearch (optional)
+OPENSEARCH_URL=https://opensearch.example.com:9200
+OPENSEARCH_INDEX=audits
+OPENSEARCH_USERNAME=elastic
+OPENSEARCH_PASSWORD=<password>
+OPENSEARCH_TLS_VERIFY=true
 
 # Networking
 AUDIT_HTTP_TIMEOUT=5
