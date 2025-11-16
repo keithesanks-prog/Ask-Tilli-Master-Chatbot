@@ -487,15 +487,15 @@ graph TB
     
     %% Styling
     classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
-    classDef transportStyle fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    classDef authStyle fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    classDef validationStyle fill:#ffccbc,stroke:#e64a19,stroke-width:2px
-    classDef harmfulStyle fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    classDef apiStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef businessStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    classDef auditStyle fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
-    classDef storageStyle fill:#b2dfdb,stroke:#00695c,stroke-width:2px
-    classDef dataStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    classDef transportStyle fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#111111
+    classDef authStyle fill:#fff9c4,stroke:#f57f17,stroke-width:2px,color:#111111
+    classDef validationStyle fill:#ffccbc,stroke:#e64a19,stroke-width:2px,color:#111111
+    classDef harmfulStyle fill:#ffcdd2,stroke:#c62828,stroke-width:2px,color:#111111
+    classDef apiStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#111111
+    classDef businessStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#111111
+    classDef auditStyle fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px,color:#111111
+    classDef storageStyle fill:#b2dfdb,stroke:#00695c,stroke-width:2px,color:#111111
+    classDef dataStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#111111
     
     class Educator clientStyle
     class TLS,SecurityHeaders transportStyle
