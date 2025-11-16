@@ -18,6 +18,72 @@
 
 ---
 
+## Current Attack Surface Overview (Post-Updates)
+
+### Network & Transport
+- Exposed service: FastAPI on port 8000 (HTTP; TLS via reverse proxy).
+- Protections: TLS enforcement available; security headers (HSTS/CSP); CORS defaults for dev.
+- Risks: MITM without TLS, host header issues if misconfigured, overly-permissive CORS in prod.
+
+### Authentication & Authorization
+- Public: `GET /health`.
+- Admin-only: `GET /health/security`, `GET /query/prepost`, `GET /debug/*`.
+- Educator: `POST /ask`, `POST /agent/ask`.
+- Protections: JWT auth with role gates; OIDC/JWKS integration documented.
+- Risks: Auth must be enabled in prod; role mapping/config errors; token replay.
+
+### Rate Limiting & DoS
+- Protections: Endpoint-specific limits via slowapi.
+- Risks: Needs Redis backend for multi-instance; distributed attacks across IPs.
+
+### Input Handling & Prompt Safety
+- Protections: InputSanitizer, prompt-injection patterns, size checks; harmful-content detection on question/response.
+- Risks: Advanced injection variants; sensitivity tuning needed; potential false positives/negatives.
+
+### Data Sources (CSV now, DB later)
+- Protections: Server-side filtering/aggregation; admin-gated debug/report; dataset path fixed.
+- Risks: PII exposure via reports/debug if auth disabled; future DB introduces SQL/authorization risks.
+
+### External LLM/API
+- Protections: API key via env; fallback to mock on failure; error handling.
+- Risks: Key leakage, quota abuse, egress exfiltration; lack of timeouts/retries/circuit breaker; cost control.
+
+### Observability & Logging
+- Protections: Structured logs; FERPA audit logger; fail-safe shutdown.
+- Risks: Sensitive data in logs if not redacted; retention/immutability must be configured.
+
+### Configuration & Secrets
+- Protections: README guidance for env; production flags present.
+- Risks: Misconfigured `ENABLE_AUTH`, `REQUIRE_TLS`; secrets in files; weak JWT secrets.
+
+### Debug/Admin Surfaces
+- Protections: Admin-gated; documented.
+- Risks: Information disclosure if exposed publicly; keep disabled or restricted in internet-facing envs.
+
+### Supply Chain
+- Protections: Pinned versions; requirements file.
+- Risks: Vulnerable dependencies; missing SCA/Dependabot; no signed releases.
+
+---
+
+## Top Priority Actions (Pre-Production)
+1. Enforce TLS and strict CORS
+   - `REQUIRE_TLS=true`, reverse proxy TLS 1.2+/1.3, tighten `ALLOWED_ORIGINS`.
+2. Enable authentication and adopt OIDC/JWKS
+   - `ENABLE_AUTH=true`, `JWT_SECRET_KEY`, configure `OIDC_ISSUER`/`OIDC_AUDIENCE`; verify role claims.
+3. Implement data access control
+   - School/tenant isolation; per-student/classroom permissions; row-level security; consistent filtering.
+4. PII redaction and response validation
+   - Add PII detection (e.g., Presidio), redact before returning; log PII incidents.
+5. Harden rate limiting and resilience
+   - Redis-backed limiter; user/tenant-based limits; timeouts, retries with backoff, circuit breaker for LLM.
+6. Audit logging and retention
+   - Immutable storage (WORM), 7-year retention, SIEM integration, periodic reviews.
+7. Lock down admin/debug endpoints
+   - Keep admin-only; optionally restrict by network; disable in public environments.
+8. Monitoring & alerting
+   - Alert on `/health/security` regressions, auth failures, 4xx/5xx spikes, and cost anomalies.
+
 ## ✅ **WELL PROTECTED** (Good Coverage)
 
 ### 1. **Input Validation & Sanitization** ✅ **VERY STRONG**
