@@ -781,6 +781,42 @@ Development defaults:
 Swagger “Authorize”:
 - Use `Bearer <jwt>` in the Authorize dialog to call protected endpoints from `/docs`.
 
+### Integrating with External Authentication (OIDC/JWT) — NEW
+
+You can integrate this API with an Identity Provider (IdP) such as Google Workspace, Microsoft Entra ID (Azure AD), Clever, Auth0, or Okta using OpenID Connect (OIDC). The API validates IdP-issued JWTs and maps IdP roles to app roles.
+
+Recommended flow:
+1. Register this API in your IdP (an “application” or “API” registration).
+2. Configure environment variables (below) so the API can validate tokens via JWKS.
+3. Issue a token from your IdP (via your login flow) and paste in Swagger “Authorize” as `Bearer <token>`.
+
+Environment variables:
+```
+ENABLE_AUTH=true
+JWT_SECRET_KEY=<fallback-secret-for-local-only>
+
+# OIDC mode
+AUTH_MODE=oidc
+OIDC_ISSUER=https://login.microsoftonline.com/<tenant-id>/v2.0
+OIDC_AUDIENCE=<your-api-client-id-or-audience>
+# Optional: override; otherwise discovered via issuer's well-known config
+OIDC_JWKS_URL=https://login.microsoftonline.com/<tenant-id>/discovery/v2.0/keys
+
+# Role mapping
+ROLE_CLAIM=roles           # or 'groups' or 'custom:role'
+ROLE_MAPPING_JSON={"Admin":"admin","Teacher":"educator","Educator":"educator"}
+```
+
+Implementation notes:
+- The API verifies `iss` (issuer), `aud` (audience), signature (via JWKS), and token expiry.
+- The `ROLE_CLAIM` is extracted from the token and mapped via `ROLE_MAPPING_JSON` to the app roles used by `require_admin` / `require_educator`.
+- For API gateways doing JWT validation, you can set `AUTH_MODE=gateway` and trust forwarded headers/JWT (ensure network trust or mTLS).
+
+Testing:
+- Obtain a JWT from your IdP (e.g., device code flow or via your frontend).
+- In `/docs`, click “Authorize”, enter: `Bearer <paste-token>`, then hit protected endpoints (e.g., `/health/security`).
+- If a token lacks the required role, you’ll receive `403`.
+
 ### POST /agent/ask
 
 Main endpoint for educator questions.
