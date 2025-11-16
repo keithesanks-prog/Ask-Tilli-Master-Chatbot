@@ -223,6 +223,61 @@ Once the service is running, access:
 - **Security Health:** `http://localhost:8000/health/security`
 - **Main Endpoint:** `POST http://localhost:8000/agent/ask`
 
+### Comparison-Aware Questions (NEW)
+
+The agent detects comparison intent in questions containing keywords like "before", "after", "growth", "change", "progress".
+On detection, the agent loads PRE and POST rows from the CSV export and injects a comparison summary into the LLM prompt.
+
+- Example:
+  - Question: "How did Grade 1 perform before and after the program?"
+  - Behavior: Loads PRE and POST for Grade 1, computes per-metric { pre, post, delta }, and includes it in the LLM context.
+
+Notes:
+- In development, the LLM may be mocked unless `GEMINI_API_KEY` is set; the comparison summary is still computed and included.
+
+### Program Comparison Endpoints (CSV-based)
+
+GET `/query/prepost` — aggregated PRE vs POST totals and per-metric deltas.
+
+- Query parameters:
+  - `school` (optional) — e.g., "School 1"
+  - `grade` (optional) — e.g., "Grade 1"
+  - `assessment` (optional) — e.g., "child", "parent", "teacher_report"
+  - `file_name` (optional) — defaults to latest CSV in `data/`
+
+- Examples:
+  - PowerShell:
+    ```powershell
+    Invoke-RestMethod -Method GET `
+      -Uri "http://localhost:8000/query/prepost?school=School%201&grade=Grade%201&assessment=child" |
+      ConvertTo-Json -Depth 10
+    ```
+  - Curl (Windows):
+    ```powershell
+    curl.exe "http://localhost:8000/query/prepost?school=School%201&grade=Grade%201&assessment=child"
+    ```
+
+GET `/debug/pre-post` — debug: raw PRE and POST summaries plus computed comparison.
+
+- Query parameters:
+  - `grade` (required) — e.g., "Grade 1"
+  - `assessment` (optional) — e.g., "child"
+  - `file_name` (optional) — defaults to latest CSV in `data/`
+
+- Examples:
+  - PowerShell:
+    ```powershell
+    Invoke-WebRequest -Method GET `
+      -Uri "http://localhost:8000/debug/pre-post?grade=Grade%201&assessment=child" `
+      -Headers @{ Connection = 'close'; Accept = 'application/json' } |
+      Select-Object -ExpandProperty Content
+    ```
+  - Curl (Windows):
+    ```powershell
+    curl.exe "http://localhost:8000/debug/pre-post?grade=Grade%201&assessment=child"
+    ```
+
+
 ---
 
 ## Additional Resources

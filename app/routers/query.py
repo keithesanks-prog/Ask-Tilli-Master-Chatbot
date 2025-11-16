@@ -7,6 +7,7 @@ from fastapi import APIRouter
 from typing import List, Dict, Any
 
 from ..services.data_router import DataRouter
+from ..services import csv_data
 
 
 router = APIRouter(prefix="/query", tags=["query"])
@@ -51,5 +52,35 @@ async def get_test_data(sources: str = "EMT,SEL") -> Dict[str, Any]:
     return {
         "sources": source_list,
         "data_summary": data_summary
+    }
+
+
+@router.get("/prepost")
+async def prepost_comparison(
+    school: str = None,
+    grade: str = None,
+    assessment: str = None,
+    file_name: str = csv_data.DEFAULT_FILE_NAME
+) -> Dict[str, Any]:
+    """
+    Compute PRE vs POST comparison from the uploaded CSV dataset.
+    
+    Query params (all optional):
+    - school: Filter by school name (exact match)
+    - grade: Filter by grade (e.g., "Grade 1")
+    - assessment: Filter by assessment type (e.g., "child", "parent", "teacher_report")
+    - file_name: CSV file name within data/ (defaults to latest export)
+    """
+    rows = csv_data.load_scores(file_name=file_name)
+    filtered = csv_data.filter_records(rows, school=school, grade=grade, assessment=assessment)
+    comparison = csv_data.compute_prepost_comparison(filtered)
+    return {
+        "filters": {
+            "school": school,
+            "grade": grade,
+            "assessment": assessment,
+            "file_name": file_name
+        },
+        "result": comparison
     }
 

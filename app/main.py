@@ -12,6 +12,7 @@ from slowapi.errors import RateLimitExceeded
 
 from .models.query_models import AskRequest, AskResponse, HealthResponse, SecurityHealthResponse
 from .routers import agent, query, prompt_eval, test
+from .routers import debug as debug_router
 from .services.data_router import DataRouter
 from .services.llm_engine import LLMEngine
 from .middleware.rate_limit import limiter, _rate_limit_exceeded_handler
@@ -111,6 +112,7 @@ app.include_router(agent.router)
 app.include_router(query.router)
 app.include_router(prompt_eval.router)
 app.include_router(test.router)
+app.include_router(debug_router.router)
 
 
 @app.post("/ask", response_model=AskResponse, tags=["ask"])

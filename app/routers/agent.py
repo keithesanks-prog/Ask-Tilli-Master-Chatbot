@@ -14,6 +14,7 @@ from ..services.harmful_content_detector import HarmfulContentDetector
 from ..services.audit_logger import FERPAAuditLogger
 from ..middleware.auth import verify_token
 from ..middleware.rate_limit import limiter, RATE_LIMITS
+from ..services import csv_data
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,14 @@ data_router = DataRouter()
 llm_engine = LLMEngine()
 harmful_content_detector = HarmfulContentDetector(enabled=True)
 audit_logger = FERPAAuditLogger(enabled=True)
+
+COMPARISON_KEYWORDS = [
+    "before", "after", "growth", "change", "progress", "improve", "improvement", "compare", "comparison", "trend"
+]
+
+def _needs_prepost_comparison(question: str) -> bool:
+    q = (question or "").lower()
+    return any(k in q for k in COMPARISON_KEYWORDS)
 
 
 @router.post("/ask", response_model=AskResponse)
@@ -146,6 +155,22 @@ async def ask_question(
         
         # Step 3: Format data for LLM
         data_summary = data_router.format_data_for_llm(dataset)
+        
+        # Step 3.5: If question implies pre/post comparison, build comparison summary from CSV
+        # Basic heuristic: detect keywords and extract grade if present in request
+        if _needs_prepost_comparison(sanitized_question):
+            try:
+                grade_hint = sanitized_grade_level or "Grade 1"  # default to Grade 1 if not provided
+                pre_rows = csv_data.filter_scores(grade=grade_hint, test_type="pre")
+                post_rows = csv_data.filter_scores(grade=grade_hint, test_type="post")
+                comparison_summary = csv_data.build_comparison_summary(pre_rows, post_rows)
+                # Attach to data summary so the LLM can use it
+                data_summary["prepost_comparison"] = {
+                    "grade": grade_hint,
+                    "summary": comparison_summary
+                }
+            except Exception as e:
+                logger.warning(f"Pre/Post comparison unavailable: {str(e)}")
         
         # Step 4: Generate response using LLM (prompt sanitization happens inside)
         answer = llm_engine.generate_response(

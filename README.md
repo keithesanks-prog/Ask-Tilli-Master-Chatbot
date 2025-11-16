@@ -764,6 +764,20 @@ Main endpoint for educator questions.
 }
 ```
 
+#### Comparison-aware questions (NEW)
+
+The agent detects pre/post comparison intent from keywords like "before", "after", "growth", "change", "progress".
+When detected, it will:
+- Load PRE and POST rows from the CSV export (see Data Integration below)
+- Build a comparison summary (per-metric pre, post, delta) for the requested grade
+- Inject the summary into the LLM prompt context to improve the answer
+
+Example:
+- "How did Grade 1 perform before and after the program?"
+
+Notes:
+- In development, the LLM uses mock responses unless `GEMINI_API_KEY` is set, but the comparison summary is still computed and passed through.
+
 ### GET /health
 
 Basic health check endpoint.
@@ -910,6 +924,57 @@ Receives evaluation data from the external Prompt Eval Tool service.
 
 **Note:** This endpoint receives data FROM the Prompt Eval Tool (external service), not the other way around.
 
+### GET /query/prepost (NEW)
+
+Compute PRE vs POST comparison from the uploaded CSV dataset.
+
+Query params:
+- `school` (optional) — e.g., "School 1"
+- `grade` (optional) — e.g., "Grade 1"
+- `assessment` (optional) — e.g., "child", "parent", "teacher_report"
+- `file_name` (optional) — CSV file name in `data/` (defaults to latest)
+
+Example:
+```
+GET /query/prepost?school=School%201&grade=Grade%201&assessment=child
+```
+
+Response (shape):
+```json
+{
+  "filters": {...},
+  "result": {
+    "summary": {
+      "total_pre": 41,
+      "total_post": 2,
+      "rows_pre": 5,
+      "rows_post": 1
+    },
+    "metrics": {
+      "social_awareness_expert": { "pre": 12, "post": 0, "delta": -12 }
+    }
+  }
+}
+```
+
+### GET /debug/pre-post (NEW, internal)
+
+Debug endpoint to inspect raw PRE/POST summaries and computed comparison.
+
+Query params:
+- `grade` (required) — e.g., "Grade 1"
+- `assessment` (optional) — e.g., "child"
+- `file_name` (optional) — defaults to latest CSV in `data/`
+
+Example:
+```
+GET /debug/pre-post?grade=Grade%201&assessment=child
+```
+
+Returns:
+- `pre` and `post` summaries (per-metric sums, total_students)
+- `comparison` object (pre, post, delta per metric)
+
 ## How It Works
 
 ### Data Routing
@@ -947,6 +1012,18 @@ The `LLMEngine` service implements the **Master Prompt** component:
    - Intervention ideas
    - Trend analysis
    - Recommendations
+
+### Data Integration (NEW)
+
+The service loads program-level aggregated assessment exports from `data/`:
+- File: `data/scores_export_2025-11-16.csv`
+- Fields include: `School`, `Grade`, `Assessment`, `Test Type` (PRE/POST), `Total Students`, and multiple SEL domain metrics as counts for Beginner/Growth/Expert.
+
+Helpers in `app/services/csv_data.py`:
+- `load_scores(file_name)` — load and normalize CSV rows
+- `filter_scores(grade=..., test_type=..., school=..., assessment=...)` — filter rows
+- `compute_prepost_comparison(rows)` — aggregated PRE vs POST metrics
+- `build_comparison_summary(pre_rows, post_rows)` — concise object for LLM context
 
 ## Data Models
 

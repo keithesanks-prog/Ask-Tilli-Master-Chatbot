@@ -95,6 +95,8 @@ The Master Agent follows a **layered architecture** with clear separation of con
 - `POST /ask` - Alternative main endpoint
 - `GET /health` - Health check
 - `GET /health/security` - Security health check
+- `GET /query/prepost` - PRE vs POST comparison from CSV (new)
+- `GET /debug/pre-post` - Debug: raw PRE/POST summaries and comparison (new)
 
 **Example Request:**
 ```json
@@ -295,6 +297,23 @@ def validate_response(response: str) -> str:
 - Detects child safety concerns (self-harm, abuse, bullying)
 - Blocks harmful responses
 - Generates alerts for high-severity content
+
+### Pre/Post Comparison Flow (NEW)
+
+The agent can detect comparison intent and incorporate program-level PRE vs POST data:
+
+1. Detect comparison keywords in the question: "before", "after", "growth", "change", "progress", "improve", "trend".
+2. Resolve the grade hint from the request (`grade_level`), defaulting to "Grade 1" if unspecified.
+3. Load CSV data via `app/services/csv_data.py`:
+   - `filter_scores(grade=..., test_type="pre")`
+   - `filter_scores(grade=..., test_type="post")`
+   - `build_comparison_summary(pre_rows, post_rows)` → metrics with { pre, post, delta }
+4. Inject `prepost_comparison` into the LLM `data_summary` so the prompt includes the comparison.
+5. Generate the final answer (mock in dev or via Gemini if `GEMINI_API_KEY` is set).
+
+Debugging:
+- Use `GET /debug/pre-post?grade=Grade%201&assessment=child` to inspect PRE/POST summaries and the computed comparison.
+- Aggregated report: `GET /query/prepost?...` to view totals and per-metric deltas.
 
 ---
 
