@@ -31,6 +31,10 @@ Thumbs.db
 ## Local/dev artifacts
 *.log
 *.csv
+.gitignore
+
+# Keep exported datasets under data/
+!data/*.csv
 .tmp_*
 *.sqlite
 *.db

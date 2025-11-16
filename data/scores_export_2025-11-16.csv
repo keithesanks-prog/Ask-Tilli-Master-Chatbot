@@ -1,0 +1,7 @@
+ID,School,Grade,Assessment,Total Students,Test Type,Overall Beginner,Overall Growth,Overall Expert,Self Awareness Beginner,Self Awareness Growth,Self Awareness Expert,Social Management Beginner,Social Management Growth,Social Management Expert,Social Awareness Beginner,Social Awareness Growth,Social Awareness Expert,Relationship Skills Beginner,Relationship Skills Growth,Relationship Skills Expert,Responsible Decision Making Beginner,Responsible Decision Making Growth,Responsible Decision Making Expert,Metacognition Beginner,Metacognition Growth,Metacognition Expert,Empathy Beginner,Empathy Growth,Empathy Expert,Critical Thinking Beginner,Critical Thinking Growth,Critical Thinking Expert
+68e906cad93e486e698f,School 1,Grade 1,child,14,PRE,0,0,14,1,10,3,11,2,1,10,3,1,7,4,3,11,0,3,6,7,1,6,6,2,11,2,1
+68e9dc25a9de0ff01992,School 2,Grade 1,parent,3,PRE,2,1,0,0,3,0,0,2,1,0,3,0,0,2,1,0,2,1,0,3,0,0,3,0,0,3,0
+68e9dc5dd1e422c5cf22,School 1,Grade 1,parent,13,PRE,11,2,0,5,6,2,3,8,2,4,7,2,2,8,3,4,8,1,3,9,1,2,11,0,3,10,0
+68e9dfebc38a903135a0,School 2,Grade 1,teacher_report,1,PRE,0,0,1,0,1,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,1,0,0,1,0,1,0
+68edfa91b78297f9a2a7,School 1,Grade 1,teacher_report,10,PRE,0,3,7,0,4,6,0,4,6,0,2,8,4,3,3,1,4,5,0,3,7,0,7,3,0,5,5
+69155e5636466ed4ddce,School 1,Grade 1,child,2,POST,0,0,2,0,0,2,2,0,0,2,0,0,0,0,2,2,0,0,0,2,0,0,2,0,0,2,0
