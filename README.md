@@ -758,6 +758,29 @@ Once the service is running, visit:
 
 ## API Endpoints
 
+### Access Control (Authorization) — NEW
+
+When authentication is enabled (`ENABLE_AUTH=true`, set `JWT_SECRET_KEY`), endpoints are protected by role:
+
+- Public (no auth required):
+  - `GET /health`
+- Admin only:
+  - `GET /health/security` (all formats, including `?format=summary|html`)
+  - `GET /query/prepost`
+  - `GET /debug/pre-post`
+- Authenticated educator/staff:
+  - `POST /agent/ask` and `POST /ask`
+
+Development defaults:
+- By default, `ENABLE_AUTH` is false, so all endpoints can be exercised during development.
+- For production, set:
+  - `ENABLE_AUTH=true`
+  - `JWT_SECRET_KEY=<strong secret>`
+  - Issue JWTs with a `role` claim (`admin`, `educator`), and `sub` as user id.
+
+Swagger “Authorize”:
+- Use `Bearer <jwt>` in the Authorize dialog to call protected endpoints from `/docs`.
+
 ### POST /agent/ask
 
 Main endpoint for educator questions.
