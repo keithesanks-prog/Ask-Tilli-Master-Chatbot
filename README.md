@@ -749,6 +749,10 @@ export TEST_MODE=true
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
+> **Note**: `TEST_MODE` primarily mocks the LLM and external APIs. It does **not** disable Authentication or Rate Limiting.
+> - To disable authentication, set `ENABLE_AUTH=false`.
+> - Rate limiting remains active (using memory by default in dev).
+
 Endpoints:
 - GET `/test/config` — current test mode configuration and behaviors
 - POST `/test/self` — runs a short self-test battery (sanitization, harmful content detection, LLM mock path, audit log smoke)
