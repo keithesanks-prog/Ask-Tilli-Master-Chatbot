@@ -13,9 +13,12 @@ services:
       # DISABLE_SOURCES: "EMT"
       # Auth defaults (dev)
       ENABLE_AUTH: "false"
+      JWT_SECRET_KEY: "CHANGE_THIS_IN_PRODUCTION_USE_COMPLEX_SECRET"
       # Security headers / TLS behavior (normally enforced by reverse proxy in prod)
       ENFORCE_HTTPS: "false"
       REQUIRE_TLS: "false"
+      # Rate Limiting (Redis)
+      REDIS_URL: "redis://redis:6379/0"
       # Gemini (real LLM) – set to use real responses
       # GEMINI_API_KEY: "your-key"
       # Audit sinks (optional examples)
@@ -29,6 +32,36 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    volumes:
+      - audit-logs:/app/audit_logs
+    depends_on:
+      - redis
     restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    restart: unless-stopped
+
+volumes:
+  audit-logs:
+
 
 
