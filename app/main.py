@@ -7,7 +7,7 @@ import os
 import logging
 from fastapi import FastAPI, HTTPException, Request, Response, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from slowapi.errors import RateLimitExceeded
 
 from .models.query_models import AskRequest, AskResponse, HealthResponse, SecurityHealthResponse
@@ -17,6 +17,7 @@ from .services.data_router import DataRouter
 from .services.llm_engine import LLMEngine
 from .middleware.rate_limit import limiter, _rate_limit_exceeded_handler
 from .middleware.auth import verify_token
+from .middleware.auth import require_admin
 from .middleware.security_headers import SecurityHeadersMiddleware, TLSEnforcementMiddleware
 from .middleware.fail_safe import FailSafeMiddleware
 from .services.security import SecurityError, InputSanitizer
@@ -242,7 +243,10 @@ async def health_check(request: Request) -> HealthResponse:
 
 @app.get("/health/security", response_model=SecurityHealthResponse, tags=["health"])
 @limiter.limit("10/minute")  # Lower rate limit for security endpoint
-async def security_health_check(request: Request) -> SecurityHealthResponse:
+async def security_health_check(
+    request: Request,
+    current_user: dict = Depends(require_admin)
+) -> SecurityHealthResponse:
     """
     Comprehensive security health check endpoint.
     
@@ -287,29 +291,91 @@ async def security_health_check(request: Request) -> SecurityHealthResponse:
     health_checker = SecurityHealthCheck()
     health_status = health_checker.check_all()
     
-    response = SecurityHealthResponse(**health_status)
+    # Optional friendly formats
+    fmt = (request.query_params.get("format") or "").lower()
+    if fmt in ("summary", "html"):
+        def _emoji(s: str) -> str:
+            return {"healthy":"✅","degraded":"⚠️","unhealthy":"❌","critical":"🔴"}.get(s, "❓")
+        def _prio(s: str) -> int:
+            return {"critical":0,"unhealthy":1,"degraded":2,"healthy":3}.get((s or "").lower(), 9)
+        def _suggestions(name: str) -> list[str]:
+            m = {
+                "authentication": ["Enable auth in prod: ENABLE_AUTH=true, set JWT_SECRET_KEY"],
+                "transport_security": ["Enforce TLS: REQUIRE_TLS=true and reverse proxy TLS"],
+                "external_api": ["Set GEMINI_API_KEY to enable real LLM calls"],
+                "security_headers": ["Enable ENFORCE_HTTPS=true; verify CSP/HSTS in prod"],
+                "cors": ["Restrict ALLOWED_ORIGINS to trusted domains"],
+                "rate_limiting": ["Back with Redis for multi-instance deployments"],
+                "audit_logging": ["Ensure immutable storage and FERPA retention"],
+                "harmful_content_detection": ["Tune sensitivity/block threshold before prod"],
+            }
+            return m.get(name, [])
+        checks = health_status.get("checks", {})
+        flat = []
+        for name, d in checks.items():
+            st = (d.get("status") or "healthy").lower()
+            flat.append({
+                "check": name,
+                "status": st,
+                "message": d.get("message"),
+                "suggestions": _suggestions(name),
+            })
+        flat.sort(key=lambda x: _prio(x["status"]))
+        summary = {
+            "timestamp": health_status.get("timestamp"),
+            "overall_status": f"{_emoji(health_status.get('overall_status'))} {health_status.get('overall_status')}",
+            "counts": {
+                "healthy": health_status.get("summary", {}).get("healthy"),
+                "degraded": health_status.get("summary", {}).get("degraded"),
+                "unhealthy": health_status.get("summary", {}).get("unhealthy"),
+                "critical": health_status.get("summary", {}).get("critical"),
+            },
+            "top_issues": [i for i in flat if i["status"] != "healthy"][:3],
+            "checks": flat if fmt == "summary" else None,
+            "docs_links": {
+                "readme": "README.md",
+                "tls": "TLS_CONFIGURATION.md",
+                "security": "SECURITY.md",
+                "health": "HEALTH_CHECK.md",
+            }
+        }
+        if fmt == "html":
+            def badge(color: str, text: str) -> str:
+                return f"<span style='background:{color};color:#fff;padding:2px 8px;border-radius:12px;font-size:12px'>{text}</span>"
+            status_color = {
+                "healthy":"#2e7d32","degraded":"#f57f17","unhealthy":"#c62828","critical":"#b71c1c"
+            }.get(health_status.get("overall_status"), "#616161")
+            rows = []
+            for i in summary["top_issues"]:
+                color = {"healthy":"#2e7d32","degraded":"#f57f17","unhealthy":"#c62828","critical":"#b71c1c"}.get(i["status"],"#616161")
+                rows.append(f"<tr><td>{i['check']}</td><td>{badge(color, i['status'])}</td><td>{i.get('message','')}</td><td>{'; '.join(i.get('suggestions', []))}</td></tr>")
+            html = f"""<!doctype html>
+<html><head><meta charset="utf-8"><title>Security Health</title>
+<style>body{{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding:20px}}table{{border-collapse:collapse;width:100%}}th,td{{border:1px solid #e0e0e0;padding:8px;text-align:left}}th{{background:#fafafa}}.counts span{{margin-right:10px}}</style>
+</head><body>
+  <h2>Security Health {_emoji(health_status.get('overall_status'))}</h2>
+  <div class="counts">
+    {badge(status_color, health_status.get('overall_status'))}
+    <span>Healthy: {summary['counts']['healthy']}</span>
+    <span>Degraded: {summary['counts']['degraded']}</span>
+    <span>Unhealthy: {summary['counts']['unhealthy']}</span>
+    <span>Critical: {summary['counts']['critical']}</span>
+  </div>
+  <h3>Top Issues</h3>
+  <table>
+    <tr><th>Check</th><th>Status</th><th>Message</th><th>Suggestions</th></tr>
+    {''.join(rows) or '<tr><td colspan="4">No issues</td></tr>'}
+  </table>
+  <p style="margin-top:16px">Docs: <a href="README.md">README</a> · <a href="TLS_CONFIGURATION.md">TLS</a> · <a href="SECURITY.md">Security</a> · <a href="HEALTH_CHECK.md">Health Check</a></p>
+</body></html>"""
+            return HTMLResponse(content=html, status_code=200)
+        return JSONResponse(content=summary, status_code=200)
     
-    # Return appropriate HTTP status based on overall status
-    if health_status["overall_status"] == "critical":
-        # Return 503 (Service Unavailable) for critical issues
-        return Response(
-            content=response.model_dump_json(),
-            status_code=503,
-            media_type="application/json"
-        )
-    elif health_status["overall_status"] == "unhealthy":
-        # Return 503 for unhealthy status
-        return Response(
-            content=response.model_dump_json(),
-            status_code=503,
-            media_type="application/json"
-        )
-    elif health_status["overall_status"] == "degraded":
-        # Return 200 but with degraded status in body
-        return response
-    else:
-        # Return 200 for healthy status
-        return response
+    # Default: full JSON (pydantic model) with status code mapping
+    response = SecurityHealthResponse(**health_status)
+    if health_status["overall_status"] in ("critical", "unhealthy"):
+        return Response(content=response.model_dump_json(), status_code=503, media_type="application/json")
+    return response
 
 
 if __name__ == "__main__":

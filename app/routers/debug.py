@@ -6,9 +6,10 @@ Not intended for production use.
 """
 import logging
 from typing import Dict, Any, Optional
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 
 from ..services import csv_data
+from ..middleware.auth import require_admin
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ async def debug_pre_post(
 	grade: str = Query(..., description="Grade label, e.g., 'Grade 1'"),
 	assessment: Optional[str] = Query(None, description="Assessment type, e.g., 'child', 'parent', 'teacher_report'"),
 	file_name: str = csv_data.DEFAULT_FILE_NAME,
+	current_user: dict = Depends(require_admin),
 ) -> Dict[str, Any]:
 	"""
 	Return raw PRE and POST summaries and a comparison object for the given grade/assessment.

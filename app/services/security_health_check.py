@@ -60,6 +60,8 @@ class SecurityHealthCheck:
             "security_headers": self.check_security_headers(),
             "cors": self.check_cors(),
         }
+        # Add production sanity grouping
+        checks["production_sanity"] = self.check_production_sanity()
         
         # Calculate overall status
         overall_status = self._calculate_overall_status(checks)
@@ -343,6 +345,29 @@ class SecurityHealthCheck:
                 "allowed_origins_count": len([o for o in allowed_origins if o.strip()]),
                 "allows_all_origins": "*" in allowed_origins,
                 "production_mode": is_production,
+                "issues": issues
+            }
+        }
+    
+    def check_production_sanity(self) -> Dict[str, Any]:
+        """Check common production misconfigurations."""
+        environment = os.getenv("ENVIRONMENT", "development")
+        is_production = environment == "production"
+        enable_auth = os.getenv("ENABLE_AUTH", "false").lower() == "true"
+        require_tls = os.getenv("REQUIRE_TLS", "false").lower() == "true"
+        issues = []
+        if is_production and not enable_auth:
+            issues.append("Authentication is disabled in production")
+        if is_production and not require_tls:
+            issues.append("TLS/HTTPS is not enforced in production")
+        status = HealthStatus.HEALTHY if not issues else HealthStatus.DEGRADED
+        return {
+            "status": status.value,
+            "message": "Production configuration sanity checks",
+            "details": {
+                "environment": environment,
+                "auth_enabled": enable_auth,
+                "tls_enforced": require_tls or is_production,
                 "issues": issues
             }
         }

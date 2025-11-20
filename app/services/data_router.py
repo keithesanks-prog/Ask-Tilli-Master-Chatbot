@@ -7,6 +7,7 @@ Uses keyword matching as a placeholder for more sophisticated NLP in the future.
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
 import re
+import os
 
 from ..models.data_models import AssessmentDataSet, EMTRecord, REALRecord, SELRecord
 
@@ -40,7 +41,10 @@ class DataRouter:
     
     def __init__(self):
         """Initialize the data router."""
-        pass
+        # Allow temporarily disabling sources via environment variable.
+        # Example: DISABLE_SOURCES="EMT,REAL"
+        disabled = os.getenv("DISABLE_SOURCES", "")
+        self.disabled_sources = {s.strip().upper() for s in disabled.split(",") if s.strip()}
     
     def determine_data_sources(self, question: str) -> List[str]:
         """
@@ -58,21 +62,21 @@ class DataRouter:
         sources = []
         
         # Check for EMT keywords
-        if any(keyword in question_lower for keyword in self.EMT_KEYWORDS):
+        if "EMT" not in self.disabled_sources and any(keyword in question_lower for keyword in self.EMT_KEYWORDS):
             sources.append("EMT")
         
         # Check for REAL keywords
-        if any(keyword in question_lower for keyword in self.REAL_KEYWORDS):
+        if "REAL" not in self.disabled_sources and any(keyword in question_lower for keyword in self.REAL_KEYWORDS):
             sources.append("REAL")
         
         # Check for SEL keywords
-        if any(keyword in question_lower for keyword in self.SEL_KEYWORDS):
+        if "SEL" not in self.disabled_sources and any(keyword in question_lower for keyword in self.SEL_KEYWORDS):
             sources.append("SEL")
         
         # Default: if no specific source is identified, include all sources
         if not sources:
             # Very general question - include all three data sources
-            sources = ["EMT", "REAL", "SEL"]
+            sources = [s for s in ["EMT", "REAL", "SEL"] if s not in self.disabled_sources]
         
         return list(set(sources))  # Remove duplicates
     
@@ -102,7 +106,7 @@ class DataRouter:
         base_date = datetime.now() - timedelta(days=30)
         
         # Generate mock data based on requested sources
-        if "EMT" in data_sources:
+        if "EMT" in data_sources and "EMT" not in self.disabled_sources:
             # TODO: Replace with actual SQL query to EMT table
             dataset.emt_data = [
                 EMTRecord(
@@ -114,7 +118,7 @@ class DataRouter:
                 for i in range(3)
             ]
         
-        if "REAL" in data_sources:
+        if "REAL" in data_sources and "REAL" not in self.disabled_sources:
             # TODO: Replace with actual SQL query to REAL table
             dataset.real_data = [
                 REALRecord(
@@ -126,7 +130,7 @@ class DataRouter:
                 for i in range(3)
             ]
         
-        if "SEL" in data_sources:
+        if "SEL" in data_sources and "SEL" not in self.disabled_sources:
             # TODO: Replace with actual SQL query to SEL Data table
             dataset.sel_data = [
                 SELRecord(

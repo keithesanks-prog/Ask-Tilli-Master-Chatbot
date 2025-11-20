@@ -1,0 +1,954 @@
+Exception in thread Thread-1 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-2 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-3 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-4 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-5 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-6 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-7 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-8 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-9 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-10 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-11 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-12 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-13 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-14 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-15 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-16 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-17 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-18 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-19 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-20 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-21 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-22 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-23 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165134'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-25 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-26 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-27 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-28 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-29 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-30 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-31 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-32 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-33 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-34 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-35 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-36 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-37 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-38 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-39 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-40 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-41 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-42 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-43 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-44 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-45 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-46 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-47 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Exception in thread Thread-48 (_compress_and_hash):
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 172, in _compress_and_hash
+    os.remove(file_path)
+    ~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'tests/logs/archive\\audit_test.log.20251120_165135'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\Master-Chatbot\app\services\audit_logger.py", line 175, in _compress_and_hash
+    print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+                                                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+Starting Log Rotation Verification...
+Generating logs...
+Logs generated. Waiting for background threads to finish archival...
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\tests\reproduce_log_rotation.py", line 93, in <module>
+    verify_rotation()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\ksank\Master-Chatbot\tests\reproduce_log_rotation.py", line 61, in verify_rotation
+    print(f"\u2705 Active log file exists: {TEST_LOG_FILE} ({os.path.getsize(TEST_LOG_FILE)} bytes)")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>

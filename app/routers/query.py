@@ -3,11 +3,12 @@ Query Router
 
 Additional query endpoints for testing and data inspection.
 """
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import List, Dict, Any
 
 from ..services.data_router import DataRouter
 from ..services import csv_data
+from ..middleware.auth import require_admin
 
 
 router = APIRouter(prefix="/query", tags=["query"])
@@ -60,7 +61,8 @@ async def prepost_comparison(
     school: str = None,
     grade: str = None,
     assessment: str = None,
-    file_name: str = csv_data.DEFAULT_FILE_NAME
+    file_name: str = csv_data.DEFAULT_FILE_NAME,
+    current_user: dict = Depends(require_admin)
 ) -> Dict[str, Any]:
     """
     Compute PRE vs POST comparison from the uploaded CSV dataset.

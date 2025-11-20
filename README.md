@@ -21,6 +21,7 @@ The Master Agent is a backend service that reads from multiple assessment tables
     - [Production Mode (Using systemd)](#production-mode-using-systemd)
     - [Service Management Script](#service-management-script)
     - [Fail-Safe Shutdown Behavior](#fail-safe-shutdown-behavior)
+    - [Cloud Deployment Guide](CLOUD_DEPLOYMENT.md)
   - [API Documentation](#api-documentation)
 - [API Endpoints](#api-endpoints)
   - [Access Control (Authorization)](#access-control-authorization--new)
@@ -847,6 +848,11 @@ The service implements **fail-safe shutdown** - when stopping, it:
 For detailed information about service management, see [SERVICE_MANAGEMENT.md](SERVICE_MANAGEMENT.md).
 
 **Quick Reference:** See [USER_GUIDE.md](USER_GUIDE.md) for a quick command reference.
+
+#### Cloud Deployment Guide
+
+For instructions on deploying to cloud providers (AWS, GCP, Azure) using Docker and managed services, see the [Cloud Deployment Guide](CLOUD_DEPLOYMENT.md).
+
 
 ### API Documentation
 
