@@ -13,14 +13,22 @@ Critical Requirements:
 - Available for UNICEF audits
 """
 import os
+import sys
 import json
 import logging
+import logging.handlers
+import shutil
+import gzip
+import hashlib
+import threading
+import time
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
 from enum import Enum
 import asyncio
 import httpx
 
+# Configure internal logger for this module
 logger = logging.getLogger(__name__)
 
 
@@ -43,6 +51,132 @@ class AuditSeverity(Enum):
     CRITICAL = "critical"
 
 
+class ArchivingAuditHandler(logging.handlers.RotatingFileHandler):
+    """
+    Custom logging handler that rotates logs based on size and archives them
+    to a 'cold storage' directory with compression and checksums.
+    """
+    def __init__(self, filename, maxBytes=0, backupCount=0, archive_dir=None, encoding=None):
+        super().__init__(filename, maxBytes=maxBytes, backupCount=backupCount, encoding=encoding)
+        self.archive_dir = archive_dir
+        if self.archive_dir and not os.path.exists(self.archive_dir):
+            os.makedirs(self.archive_dir, exist_ok=True)
+
+    def rotate(self, source, dest):
+        """
+        Override rotate to hook into the rotation process.
+        Instead of just renaming/deleting, we want to archive the rotated file.
+        
+        The standard RotatingFileHandler.doRollover() calls this to rename the current log
+        to the backup filename (e.g., log -> log.1).
+        
+        However, standard doRollover logic is:
+        1. Delete last backup (log.N)
+        2. Rename log.N-1 -> log.N
+        ...
+        3. Rename log -> log.1
+        
+        We want to intercept the file that is about to be deleted (the oldest backup)
+        OR, if we want to archive *every* rotated file immediately, we might need a different approach.
+        
+        To keep it simple and compatible with standard rotation:
+        We will let standard rotation happen. But when the *oldest* file is about to be deleted
+        (which happens at the start of doRollover), we should archive it first.
+        
+        Actually, a better approach for "cold storage" is:
+        When 'source' (current log) is rotated to 'dest' (log.1), we can trigger an archival of 'dest' 
+        if we want immediate archival, OR we can archive the file that falls off the end.
+        
+        Let's implement "Archive on Rotate":
+        When the current log is full, we rename it to a timestamped filename in the archive dir,
+        compress it, and hash it. We don't use the standard "backupCount" rotation logic of renaming 
+        1->2, 2->3 because that makes incremental archival hard.
+        
+        So we override doRollover completely.
+        """
+        # We won't use this method, we override doRollover
+        pass
+
+    def doRollover(self):
+        """
+        Do a rollover, as described in __init__().
+        
+        We override this to implement "Move to Archive" instead of "Rotate and Delete".
+        """
+        if self.stream:
+            self.stream.close()
+            self.stream = None
+        
+        if self.maxBytes > 0:
+            # Instead of the standard rotation (1->2, 2->3), we move the current file
+            # directly to the archive directory with a timestamp.
+            
+            # Use microseconds to prevent collision during rapid rotation
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
+            base_filename = os.path.basename(self.baseFilename)
+            archive_filename = f"{base_filename}.{timestamp}"
+            
+            if self.archive_dir:
+                target_path = os.path.join(self.archive_dir, archive_filename)
+            else:
+                # Fallback to same directory if no archive dir configured
+                target_path = self.baseFilename + "." + timestamp
+
+            # Move the current log file to the target path
+            try:
+                if os.path.exists(self.baseFilename):
+                    shutil.move(self.baseFilename, target_path)
+                    
+                    # Launch background task to compress and hash
+                    threading.Thread(
+                        target=self._compress_and_hash,
+                        args=(target_path,),
+                        daemon=True
+                    ).start()
+            except Exception as e:
+                # Fallback: just rename in place to avoid losing data if move fails
+                try:
+                    os.rename(self.baseFilename, self.baseFilename + ".rotated." + timestamp)
+                except:
+                    pass
+                # Log error to stderr (since we can't log to the file we are rotating)
+                print(f"Error rotating audit log: {e}", file=sys.stderr)
+
+        if not self.delay:
+            self.stream = self._open()
+
+    def _compress_and_hash(self, file_path):
+        """
+        Compress the file and generate a SHA-256 checksum.
+        Runs in a background thread.
+        """
+        try:
+            # 1. Compress
+            gz_path = file_path + ".gz"
+            with open(file_path, 'rb') as f_in:
+                with gzip.open(gz_path, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+            
+            # 2. Calculate Hash of the compressed file
+            sha256_hash = hashlib.sha256()
+            with open(gz_path, "rb") as f:
+                # Read and update hash string value in blocks of 4K
+                for byte_block in iter(lambda: f.read(4096), b""):
+                    sha256_hash.update(byte_block)
+            
+            checksum = sha256_hash.hexdigest()
+            
+            # 3. Write Checksum
+            with open(gz_path + ".sha256", "w") as f:
+                f.write(checksum)
+            
+            # 4. Remove original uncompressed file
+            os.remove(file_path)
+            
+        except Exception as e:
+            print(f"Error archiving audit log {file_path}: {e}", file=sys.stderr)
+
+
 class FERPAAuditLogger:
     """
     FERPA and UNICEF-compliant audit logger.
@@ -59,9 +193,47 @@ class FERPAAuditLogger:
             enabled: Whether to enable audit logging (can be disabled for testing)
         """
         self.enabled = enabled
-        self.log_file = os.getenv("AUDIT_LOG_FILE", None)
-        self.log_to_file = self.log_file is not None
+        
+        # Configuration
+        self.log_file = os.getenv("AUDIT_LOG_FILE", "audit.log")
+        self.log_to_file = os.getenv("AUDIT_LOG_TO_FILE", "true").lower() == "true"
         self.log_to_stdout = os.getenv("AUDIT_LOG_STDOUT", "true").lower() == "true"
+        
+        # Rotation Configuration
+        # Default: 10MB max size, keep 10 backups (though our custom handler moves them to archive)
+        self.max_bytes = int(os.getenv("AUDIT_LOG_MAX_BYTES", 10 * 1024 * 1024))
+        self.backup_count = int(os.getenv("AUDIT_LOG_BACKUP_COUNT", 10))
+        self.archive_dir = os.getenv("AUDIT_ARCHIVE_DIR", "logs/archive")
+
+        # Initialize Logger
+        self.logger = logging.getLogger("audit_logger")
+        self.logger.setLevel(logging.INFO)
+        self.logger.propagate = False  # Don't propagate to root logger to avoid double logging
+        
+        # Clear existing handlers to avoid duplicates on reload
+        if self.logger.handlers:
+            self.logger.handlers.clear()
+
+        if self.enabled and self.log_to_file and self.log_file:
+            # Ensure log directory exists
+            log_dir = os.path.dirname(self.log_file)
+            if log_dir and not os.path.exists(log_dir):
+                os.makedirs(log_dir, exist_ok=True)
+
+            # Use our custom ArchivingAuditHandler
+            handler = ArchivingAuditHandler(
+                filename=self.log_file,
+                maxBytes=self.max_bytes,
+                backupCount=self.backup_count,
+                archive_dir=self.archive_dir,
+                encoding='utf-8'
+            )
+            
+            # JSON Formatter
+            formatter = logging.Formatter('%(message)s')
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+
         # Pluggable external sinks (comma-separated): splunk,otlp,syslog,future
         self.enabled_sinks = {
             sink.strip().lower()
@@ -401,16 +573,14 @@ class FERPAAuditLogger:
         # Convert to JSON for logging
         audit_json = json.dumps(audit_entry, ensure_ascii=False, default=str)
         
-        # Log to file if configured
-        if self.log_to_file and self.log_file:
-            try:
-                with open(self.log_file, "a", encoding="utf-8") as f:
-                    f.write(audit_json + "\n")
-            except Exception as e:
-                logger.error(f"Failed to write audit log to file: {str(e)}")
+        # Log to file via configured logger (handles rotation/archival)
+        if self.log_to_file:
+            self.logger.info(audit_json)
         
         # Log to stdout (structured logging)
         if self.log_to_stdout:
+            # We use the module-level logger for stdout to avoid double-writing to the file
+            # if we were to use self.logger (which has the file handler)
             logger.info(
                 "AUDIT_LOG",
                 extra={"audit": audit_entry}
