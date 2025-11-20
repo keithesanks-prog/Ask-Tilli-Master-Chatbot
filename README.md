@@ -417,7 +417,7 @@ graph TB
         subgraph "Log Management"
             ActiveLog[Active Log File]
             Rotation[Log Rotation<br/>Size Limit Reached]
-            Archival[Archival Process<br/>Compression (gzip)<br/>Hashing (SHA-256)]
+            Archival["Archival Process<br/>Compression (gzip)<br/>Hashing (SHA-256)"]
         end
         
         subgraph "Audit Log Storage"
