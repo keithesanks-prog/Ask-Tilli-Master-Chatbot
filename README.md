@@ -412,9 +412,15 @@ graph TB
             SecurityEventLog[Security Event Logs<br/>Authentication<br/>Authorization]
             PIIExposureLog[PII Exposure Logs<br/>Data Protection Events]
         end
+
+        subgraph "Log Management"
+            ActiveLog[Active Log File]
+            Rotation[Log Rotation<br/>Size Limit Reached]
+            Archival[Archival Process<br/>Compression (gzip)<br/>Hashing (SHA-256)]
+        end
         
         subgraph "Audit Log Storage"
-            AuditStorage[(Audit Log Storage<br/>Immutable<br/>Append-Only<br/>Encrypted)]
+            AuditStorage[(Audit Log Storage<br/>Immutable Archives<br/>Encrypted)]
             Compliance[Compliance<br/>FERPA 7-Year Retention<br/>UNICEF Audits<br/>GDPR Compliance]
         end
     end
@@ -478,10 +484,14 @@ graph TB
     AuditLogger --> SecurityEventLog
     AuditLogger --> PIIExposureLog
     
-    DataAccessLog --> AuditStorage
-    HarmfulContentLog --> AuditStorage
-    SecurityEventLog --> AuditStorage
-    PIIExposureLog --> AuditStorage
+    DataAccessLog --> ActiveLog
+    HarmfulContentLog --> ActiveLog
+    SecurityEventLog --> ActiveLog
+    PIIExposureLog --> ActiveLog
+
+    ActiveLog --> Rotation
+    Rotation --> Archival
+    Archival --> AuditStorage
     
     AuditStorage --> Compliance
     
@@ -504,7 +514,7 @@ graph TB
     class HarmfulDetect,SelfHarm,AbuseDetect,DataMisuse harmfulStyle
     class FastAPI,AgentRouter apiStyle
     class DataRouter,LLMEngine,Gemini businessStyle
-    class AuditLogger,DataAccessLog,HarmfulContentLog,SecurityEventLog,PIIExposureLog auditStyle
+    class AuditLogger,DataAccessLog,HarmfulContentLog,SecurityEventLog,PIIExposureLog,ActiveLog,Rotation,Archival auditStyle
     class AuditStorage,Compliance storageStyle
     class REALDB,EMTDB,SELDB dataStyle
 ```
@@ -1140,6 +1150,10 @@ Returns:
 - `comparison` object (pre, post, delta per metric)
 
 ## How It Works
+
+> **📖 For detailed explanations of:**
+> - **How components are connected:** See [System Integration & Component Connections](TECHNICAL_OVERVIEW.md#-system-integration--component-connections) in TECHNICAL_OVERVIEW.md
+> - **Agent decision-making logic:** See [Agent Decision-Making Logic](TECHNICAL_OVERVIEW.md#-agent-decision-making-logic) in TECHNICAL_OVERVIEW.md
 
 ### Data Routing
 
