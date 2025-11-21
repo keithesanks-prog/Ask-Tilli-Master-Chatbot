@@ -1,23 +1,64 @@
+annotated-types==0.7.0
+anyio==3.7.1
+bcrypt==5.0.0
+cachetools==6.2.2
+certifi==2025.11.12
+cffi==2.0.0
+charset-normalizer==3.4.4
+click==8.3.1
+colorama==0.4.6
+cryptography==46.0.3
+Deprecated==1.3.1
+ecdsa==0.19.1
 fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
+google-ai-generativelanguage==0.6.15
+google-api-core==2.28.1
+google-api-python-client==2.187.0
+google-auth==2.43.0
+google-auth-httplib2==0.2.1
+google-generativeai==0.8.5
+googleapis-common-protos==1.72.0
+grpcio==1.76.0
+grpcio-status==1.71.2
+h11==0.16.0
+httpcore==1.0.9
+httplib2==0.31.0
+httptools==0.7.1
+httpx==0.25.2
+idna==3.11
+iniconfig==2.3.0
+limits==5.6.0
+packaging==25.0
+passlib==1.7.4
+pluggy==1.6.0
+proto-plus==1.26.1
+protobuf==5.29.5
+pyasn1==0.6.1
+pyasn1_modules==0.4.2
+pycparser==2.23
+pydantic==2.12.4
+pydantic_core==2.41.5
+pyparsing==3.2.5
 pytest==7.4.3
 pytest-asyncio==0.21.1
-httpx==0.25.2
+python-dotenv==1.2.1
+python-jose==3.3.0
 python-multipart==0.0.6
-
-# LLM SDK dependencies
-google-generativeai>=0.3.0  # For Gemini API
-# openai==1.3.0  # For OpenAI (optional)
-
-# Security dependencies
-slowapi==0.1.9  # Rate limiting
-python-jose[cryptography]==3.3.0  # JWT tokens for authentication
-passlib[bcrypt]==1.7.4  # Password hashing
-python-multipart==0.0.6  # Form data parsing (already included)
-
-# TODO: Add database dependencies once schemas are provided
-# sqlalchemy==2.0.23
-# psycopg2-binary==2.9.9  # For PostgreSQL
-# or asyncpg==0.29.0  # For async PostgreSQL
-
+PyYAML==6.0.3
+requests==2.32.5
+rsa==4.9.1
+setuptools==80.9.0
+six==1.17.0
+slowapi==0.1.9
+sniffio==1.3.1
+starlette==0.27.0
+tqdm==4.67.1
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+uritemplate==4.2.0
+urllib3==2.5.0
+uvicorn==0.24.0
+watchfiles==1.1.1
+websockets==15.0.1
+wheel==0.45.1
+wrapt==2.0.1
