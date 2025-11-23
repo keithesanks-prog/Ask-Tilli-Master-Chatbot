@@ -1359,13 +1359,21 @@ The Master Agent handles sensitive student assessment data and must be secured b
 
 **⚠️ Needs Attention:**
 - Authentication (4/10 → 8/10 when enabled) - **Currently optional by default**
-- Authorization & data access control (2/10) - **Critical gap**
+- Authorization & data access control (8/10) - **Implemented, needs enforcement**
 - PII protection in outputs (3/10) - **Limited**
 
 **❌ Not Protected:**
-- Data access control - No permission checks for student/classroom access
 - PII redaction in responses - LLM responses may contain PII
 - Audit logging - Basic, not FERPA-compliant
+
+**✅ Data Access Control:**
+- Educator-classroom and student-classroom relationship enforcement
+- School-level isolation (multi-tenant security)
+- Early validation before data retrieval
+- Generic error messages (zero data leakage)
+- Audit logging for access denied events
+- Feature flag: Set `ENABLE_DATA_ACCESS_CONTROL=true` to enforce
+- See [DATA_ACCESS_CONTROL.md](DATA_ACCESS_CONTROL.md) for details
 
 **✅ Transport Security:**
 - TLS enforcement middleware implemented
@@ -1383,7 +1391,7 @@ The Master Agent handles sensitive student assessment data and must be secured b
 | Prompt Injection | ✅ Strong | Multi-layer defense |
 | Rate Limiting | ✅ Good | Per-endpoint limits |
 | Authentication | ⚠️ Optional | Set `ENABLE_AUTH=true` to enforce |
-| Data Access Control | ❌ Missing | Critical: No permission checks |
+| Data Access Control | ✅ Implemented | Set `ENABLE_DATA_ACCESS_CONTROL=true` to enforce |
 | PII Protection | ❌ Limited | No output redaction |
 | Harmful Content Detection | ✅ Implemented | UNICEF-aligned child protection |
 | Transport Security | ✅ Implemented | Set `REQUIRE_TLS=true` for production |
@@ -1393,9 +1401,10 @@ The Master Agent handles sensitive student assessment data and must be secured b
 
 **🔴 CRITICAL (Must Fix):**
 1. Set `ENABLE_AUTH=true` to enforce authentication
-2. Implement data access control (who can access which students)
-3. Add PII redaction to LLM responses
-4. Configure TLS/HTTPS:
+2. Set `ENABLE_DATA_ACCESS_CONTROL=true` to enforce access control
+3. Populate educator-classroom and student-classroom assignments
+4. Add PII redaction to LLM responses
+5. Configure TLS/HTTPS:
    - Set `ENVIRONMENT=production` or `REQUIRE_TLS=true`
    - Configure reverse proxy for TLS termination
    - See [TLS_CONFIGURATION.md](TLS_CONFIGURATION.md)

@@ -31,9 +31,9 @@
 ## 🔴 **NEEDS ATTENTION** (2-5/10)
 
 | Area | Score | Status | Action Required |
-|------|-------|--------|-----------------|
+|------|-------|--------|--------------------|
 | **Authentication** | 4/10 | ⚠️ Optional | **CRITICAL**: Set `ENABLE_AUTH=true` |
-| **Data Access Control** | 2/10 | ❌ Missing | **CRITICAL**: Implement permission checks |
+| **Data Access Control** | 8/10 | ✅ Implemented | **ACTION**: Set `ENABLE_DATA_ACCESS_CONTROL=true` to enforce |
 | **PII Protection** | 3/10 | ❌ Limited | **CRITICAL**: Add output redaction |
 | **Audit Logging** | 5/10 | ⚠️ Basic | Implement FERPA-compliant logging |
 | **Data Encryption** | 0/10 | ❌ None | Infrastructure-level encryption needed |
@@ -77,9 +77,11 @@
 - [ ] Configure CORS origins
 - [ ] Configure TLS (reverse proxy)
 - [ ] Enable eval tool authentication
+- [ ] Enable data access control (`ENABLE_DATA_ACCESS_CONTROL=true`)
+- [ ] Populate educator-classroom assignments
+- [ ] Populate student-classroom assignments
 
 ### ❌ **NOT IMPLEMENTED:**
-- [ ] Data access control (permission checks)
 - [ ] PII redaction in outputs
 - [ ] FERPA-compliant audit logging
 - [ ] Database encryption
@@ -119,7 +121,7 @@ export HSTS_INCLUDE_SUBDOMAINS=true
 | Input Injection | ✅ 9/10 | Excellent |
 | DoS/DDoS | ✅ 8/10 | Good (rate limiting) |
 | Unauthorized Access | ⚠️ 4/10 | **Enable auth** |
-| Data Exfiltration | ❌ 2/10 | **Add access control** |
+| Data Exfiltration | ✅ 8/10 | **Access control implemented, enable enforcement** |
 | PII Leakage | ❌ 3/10 | **Add redaction** |
 | Man-in-the-Middle | ✅ 9/10 | TLS implemented |
 | Unknown Structure Attacks | ✅ 8/10 | Recursive sanitization |
