@@ -1,0 +1,37 @@
+GEMINI_API_KEY not found in environment variables. Using mock responses.
+Error processing question: division by zero
+Traceback (most recent call last):
+  File "c:\Users/ksank/Master-Chatbot\app\routers\agent.py", line 229, in ask_question
+    data_summary = data_router.format_data_for_llm(dataset)
+  File "c:\Users/ksank/Master-Chatbot\app\services\data_router.py", line 201, in format_data_for_llm
+    "average_score": sum(r.emotion_score for r in dataset.emt_data) / len(dataset.emt_data),
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+Access denied: User u1 (School: School 1) attempted to access School 2
+Error processing question: division by zero
+Traceback (most recent call last):
+  File "c:\Users/ksank/Master-Chatbot\app\routers\agent.py", line 229, in ask_question
+    data_summary = data_router.format_data_for_llm(dataset)
+  File "c:\Users/ksank/Master-Chatbot\app\services\data_router.py", line 201, in format_data_for_llm
+    "average_score": sum(r.emotion_score for r in dataset.emt_data) / len(dataset.emt_data),
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+Running Data Access Control Tests...
+
+Test 1: Valid Access (School 1 -> School 1)
+DEBUG: Question='How did School 1 perform?'
+DEBUG: Extracted='School 1', Name='1'
+DEBUG: User School='School 1'
+FAIL: An error occurred processing your question. Please try again later.
+
+Test 2: Invalid Access (School 1 -> School 2)
+DEBUG: Question='How did School 2 perform?'
+DEBUG: Extracted='School 2', Name='2'
+DEBUG: User School='School 1'
+PASS: Access denied as expected: Access denied: You are not authorized to view data for School 2.
+
+Test 3: Robust Matching (Lincoln High -> School Lincoln)
+DEBUG: Question='How did School Lincoln perform?'
+DEBUG: Extracted='School Lincoln', Name='Lincoln'
+DEBUG: User School='Lincoln High School'
+FAIL: Partial match denied: An error occurred processing your question. Please try again later.

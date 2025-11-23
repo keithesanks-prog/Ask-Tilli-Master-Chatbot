@@ -86,7 +86,8 @@ class DataRouter:
         data_sources: List[str],
         grade_level: str = None,
         student_id: str = None,
-        classroom_id: str = None
+        classroom_id: str = None,
+        school: str = None
     ) -> AssessmentDataSet:
         """
         Fetch data from the specified sources.
@@ -99,6 +100,7 @@ class DataRouter:
             grade_level: Optional grade level filter
             student_id: Optional student ID filter
             classroom_id: Optional classroom ID filter
+            school: Optional school filter
             
         Returns:
             AssessmentDataSet containing data from requested sources
@@ -157,7 +159,7 @@ class DataRouter:
             # Note: student_id is not supported by the aggregated CSV, only grade/school
             csv_rows = csv_data.filter_scores(
                 grade=grade_level,
-                # We could add school filter if we had it in the request
+                school=school,
             )
             
             if csv_rows:

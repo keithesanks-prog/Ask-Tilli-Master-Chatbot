@@ -4,6 +4,7 @@ Agent Router
 Main endpoint for the Master Agent that handles educator questions.
 """
 import logging
+import re
 from fastapi import APIRouter, HTTPException, Request, Depends
 from datetime import datetime
 
@@ -71,6 +72,42 @@ async def ask_question(
                 ask_request.student_id, 
                 field_name="student_id"
             )
+            # Extract school identifier from the question (e.g., "school 1" or "School A")
+            # Extract school identifier from the question
+            # Capture "school" followed by words, allowing for multi-word names like "Lincoln High"
+            # Regex: school\s+ (one or more words)
+            school_match = re.search(r"school\s+([\w\d\s]+?)(?=\s+(?:perform|score|result|do|did|is|was)|$|[?.,])", sanitized_question, re.IGNORECASE)
+            extracted_school_raw = school_match.group(0) if school_match else None # "School Lincoln"
+            extracted_school_name = school_match.group(1) if school_match else None # "Lincoln"
+            
+            extracted_school = extracted_school_raw # Keep full string for fetch_data (CSV likely needs "School X")
+
+            # --- Data Access Control: School Isolation ---
+            user_school_id = current_user.get("school_id")
+            
+            # If user has a school_id (educators/admins usually do), enforce it
+            if user_school_id:
+                if extracted_school_name:
+                    # Robust matching: 
+                    # 1. Normalize strings
+                    # 2. Check if the CORE name (without "School") is present in the user's school ID
+                    s_name = extracted_school_name.lower().strip()
+                    s_user = user_school_id.lower().strip()
+                    
+                    # Check for overlap
+                    if s_name not in s_user and s_user not in s_name:
+                        logger.warning(
+                            f"Access denied: User {current_user.get('user_id')} (School: {user_school_id}) "
+                            f"attempted to access {extracted_school}"
+                        )
+                        raise HTTPException(
+                            status_code=403,
+                            detail=f"Access denied: You are not authorized to view data for {extracted_school}."
+                        )
+                else:
+                    # If no school specified in question, default to user's school
+                    extracted_school = user_school_id
+
             sanitized_classroom_id = InputSanitizer.sanitize_identifier(
                 ask_request.classroom_id,
                 field_name="classroom_id"
@@ -179,7 +216,8 @@ async def ask_question(
             data_sources=data_sources,
             grade_level=sanitized_grade_level,
             student_id=sanitized_student_id,
-            classroom_id=sanitized_classroom_id
+            classroom_id=sanitized_classroom_id,
+            school=extracted_school
         )
         
         # Step 3: Format data for LLM

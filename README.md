@@ -373,8 +373,10 @@ graph TB
             SecurityHeaders[Security Headers<br/>HSTS, CSP, X-Frame-Options]
         end
         
+        
         subgraph "Authentication & Authorization Layer"
             Auth[Authentication<br/>JWT Token Verification<br/>verify_token]
+            Auth0[Auth0 Identity Provider<br/>Optional External IdP<br/>RS256 JWKS]
             RateLimit[Rate Limiting<br/>Per-Endpoint Limits<br/>IP/User-Based]
             CORS[CORS<br/>Origin Validation<br/>Allowed Origins]
         end
@@ -438,6 +440,9 @@ graph TB
     SecurityHeaders --> CORS
     CORS --> RateLimit
     RateLimit --> Auth
+    
+    Auth -.->|Optional: Verify with| Auth0
+    Auth0 -.->|JWKS Public Key| Auth
     
     Auth -->|Authenticated Request| FastAPI
     FastAPI --> AgentRouter
@@ -510,7 +515,7 @@ graph TB
     
     class Educator clientStyle
     class TLS,SecurityHeaders transportStyle
-    class Auth,RateLimit,CORS authStyle
+    class Auth,Auth0,RateLimit,CORS authStyle
     class InputSanitize,InjectionDetect validationStyle
     class HarmfulDetect,SelfHarm,AbuseDetect,DataMisuse harmfulStyle
     class FastAPI,AgentRouter apiStyle
@@ -528,7 +533,8 @@ graph TB
    - Encrypted communication
 
 2. **Authentication & Authorization Layer**
-   - JWT token verification
+   - JWT token verification (HS256 local dev, RS256 Auth0)
+   - Auth0 integration (optional external identity provider)
    - Rate limiting (per-endpoint, IP/user-based)
    - CORS origin validation
 

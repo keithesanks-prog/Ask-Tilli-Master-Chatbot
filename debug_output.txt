@@ -1,0 +1,42 @@
+GEMINI_API_KEY not found in environment variables. Using mock responses.
+Blocked harmful question from user u1: severity=<MagicMock name='harmful_content_detector.detect_harmful_content().get()' id='2464034784992'>, types=<MagicMock name='harmful_content_detector.detect_harmful_content().get()' id='2464034784992'>
+Running Data Access Control Tests...
+
+Test 1: Valid Access (School 1 -> School 1)
+DEBUG: Question='How did School 1 perform?'
+DEBUG: Extracted='School 1', Name='1'
+DEBUG: User School='School 1'
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\scripts\test_access_control_robust.py", line 34, in test_access_control
+    await ask_question(mock_request, req_s1, user_s1)
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\site-packages\slowapi\extension.py", line 734, in async_wrapper
+    response = await func(*args, **kwargs)  # type: ignore
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users/ksank/Master-Chatbot\app\routers\agent.py", line 174, in ask_question
+    raise HTTPException(
+    ...<3 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Your question contains content that cannot be processed. If you believe this is an error, please contact support.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ksank\Master-Chatbot\scripts\test_access_control_robust.py", line 72, in <module>
+    asyncio.run(test_access_control())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\ksank\Master-Chatbot\scripts\test_access_control_robust.py", line 37, in test_access_control
+    print(f"\u274c Failed: {e.detail}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ksank\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>

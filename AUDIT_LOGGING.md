@@ -1,7 +1,7 @@
 # Audit Logging System
 
-**Document Version:** 1.0  
-**Last Updated:** 2024  
+**Document Version:** 1.1  
+**Last Updated:** 2025-11-23  
 **FERPA & UNICEF Compliance**
 
 ---
@@ -158,23 +158,24 @@ The Audit Logging System provides comprehensive, FERPA and UNICEF-compliant logg
 
 **Logged for security events:**
 
-- Authentication events
-- Authorization failures
+- Authentication events (Auth0 verification, local JWT)
+- Authorization failures (cross-school access attempts)
 - Rate limit violations
 - Security violations
 - System access attempts
+- Token verification failures
 
-**Example:**
+**Example - Cross-School Access Attempt:**
 ```json
 {
   "timestamp": "2024-01-01T12:00:00Z",
   "event_type": "security_event",
-  "severity": "high",
+  "severity": "medium",
   "user_id": "user_123",
   "user_email": "educator@school.edu",
-  "school_id": "school_456",
-  "security_event_type": "unauthorized_access",
-  "description": "Attempted access to different school's data",
+  "school_id": "School 1",
+  "security_event_type": "access_denied",
+  "description": "Data access denied: Attempted to access School 2 data",
   "ip_address": "192.168.1.100",
   "session_id": "session_abc123",
   "compliance_flags": {
@@ -183,7 +184,39 @@ The Audit Logging System provides comprehensive, FERPA and UNICEF-compliant logg
     "gdpr": true,
     "coppa": false
   },
-  "metadata": {}
+  "metadata": {
+    "requested_school": "School 2",
+    "user_school": "School 1",
+    "access_control_type": "school_isolation"
+  }
+}
+```
+
+**Example - Auth0 Token Verification:**
+```json
+{
+  "timestamp": "2024-01-01T12:00:00Z",
+  "event_type": "security_event",
+  "severity": "low",
+  "user_id": "auth0|123456",
+  "user_email": "educator@school.edu",
+  "school_id": "School 1",
+  "security_event_type": "authentication_success",
+  "description": "Auth0 token verified successfully",
+  "ip_address": "192.168.1.100",
+  "session_id": "session_abc123",
+  "compliance_flags": {
+    "ferpa": true,
+    "unicef": true,
+    "gdpr": true,
+    "coppa": false
+  },
+  "metadata": {
+    "auth_provider": "auth0",
+    "token_type": "RS256",
+    "role": "educator",
+    "school_id": "School 1"
+  }
 }
 ```
 
