@@ -9,7 +9,8 @@ from datetime import datetime, timedelta
 import re
 import os
 
-from ..models.data_models import AssessmentDataSet, EMTRecord, REALRecord, SELRecord
+from ..models.data_models import AssessmentDataSet, EMTRecord, REALRecord, SELRecord, AggregatedAssessmentData
+from . import csv_data
 
 
 class DataRouter:
@@ -148,6 +149,30 @@ class DataRouter:
                 )
                 for i in range(3)
             ]
+            
+        # Fetch Aggregated CSV Data (Always fetch if available, or could be conditional)
+        # For now, we fetch it to ensure the agent has access to the real data provided by the user.
+        try:
+            # Filter based on available parameters
+            # Note: student_id is not supported by the aggregated CSV, only grade/school
+            csv_rows = csv_data.filter_scores(
+                grade=grade_level,
+                # We could add school filter if we had it in the request
+            )
+            
+            if csv_rows:
+                comp = csv_data.compute_prepost_comparison(csv_rows)
+                dataset.aggregated_data = AggregatedAssessmentData(
+                    summary=comp["summary"],
+                    metrics=comp["metrics"],
+                    metadata={"source": "CSV", "file": csv_data.DEFAULT_FILE_NAME}
+                )
+        except Exception as e:
+            # Log error but don't fail the whole request
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error fetching CSV data: {e}")
+
         
         return dataset
     
@@ -164,7 +189,8 @@ class DataRouter:
         formatted = {
             "emt_summary": None,
             "real_summary": None,
-            "sel_summary": None
+            "sel_summary": None,
+            "aggregated_summary": None
         }
         
         if dataset.emt_data:
@@ -234,6 +260,13 @@ class DataRouter:
                     }
                     for r in dataset.sel_data
                 ]
+            }
+        
+        if dataset.aggregated_data:
+            formatted["aggregated_summary"] = {
+                "description": "Aggregated class-level assessment data (Pre vs Post)",
+                "student_count": dataset.aggregated_data.summary.get("total_post", 0),
+                "metrics": dataset.aggregated_data.metrics
             }
         
         return formatted

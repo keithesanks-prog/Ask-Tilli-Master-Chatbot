@@ -43,6 +43,17 @@ class SELRecord(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
+
+class AggregatedAssessmentData(BaseModel):
+    """
+    Model for aggregated assessment data (from CSV export).
+    Represents class-level summaries rather than individual student records.
+    """
+    summary: Dict[str, Any] = Field(..., description="Overall summary (total students, etc.)")
+    metrics: Dict[str, Any] = Field(..., description="Per-metric comparison (pre, post, delta)")
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
 class AssessmentDataSet(BaseModel):
     """Container for assessment data from multiple sources.
     
@@ -50,8 +61,10 @@ class AssessmentDataSet(BaseModel):
     - REAL Data: Remote Learning Assessment results
     - EMT Data: Emotion Matching Task results
     - SEL Data: Social-Emotional Learning assignment results
+    - Aggregated Data: Class-level summaries from CSV exports
     """
     emt_data: List[EMTRecord] = Field(default_factory=list)
     real_data: List[REALRecord] = Field(default_factory=list)
     sel_data: List[SELRecord] = Field(default_factory=list)
+    aggregated_data: Optional[AggregatedAssessmentData] = Field(None, description="Aggregated class-level data")
 

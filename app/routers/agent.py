@@ -5,6 +5,7 @@ Main endpoint for the Master Agent that handles educator questions.
 """
 import logging
 from fastapi import APIRouter, HTTPException, Request, Depends
+from datetime import datetime
 
 from ..models.query_models import AskRequest, AskResponse
 from ..services.data_router import DataRouter
@@ -133,6 +134,34 @@ async def ask_question(
                     detail="Your question contains content that cannot be processed. "
                            "If you believe this is an error, please contact support."
                 )
+        
+        # Step 0.75: Verify data access authorization (BEFORE data retrieval)
+        # This enforces class-level and student-level authorization
+        from ..middleware.data_access import verify_data_access
+        try:
+            await verify_data_access(
+                current_user=current_user,
+                student_id=sanitized_student_id,
+                classroom_id=sanitized_classroom_id,
+                grade_level=sanitized_grade_level
+            )
+        except HTTPException as e:
+            # Log access denied event for audit
+            audit_logger.log_security_event(
+                user_id=user_id,
+                user_email=current_user.get('email'),
+                school_id=school_id,
+                event_type="access_denied",
+                severity="medium",
+                description=f"Data access denied: student_id={sanitized_student_id}, classroom_id={sanitized_classroom_id}",
+                ip_address=request.client.host if request.client else None,
+                metadata={
+                    "student_id": sanitized_student_id,
+                    "classroom_id": sanitized_classroom_id,
+                    "grade_level": sanitized_grade_level
+                }
+            )
+            raise  # Re-raise the 403 Forbidden
         
         # Log request for audit trail
         logger.info(

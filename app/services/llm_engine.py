@@ -215,6 +215,34 @@ class LLMEngine:
         # Analyze the question and provide contextual response
         question_lower = question.lower()
         
+        # Check for Aggregated CSV Data first (highest priority for this use case)
+        if data_summary.get("aggregated_summary"):
+            agg = data_summary["aggregated_summary"]
+            metrics = agg.get("metrics", {})
+            
+            response_parts.append(
+                f"I found assessment data for {agg.get('student_count', 0)} students."
+            )
+            
+            if metrics:
+                response_parts.append("Here is the performance breakdown:")
+                for metric_name, values in metrics.items():
+                    # Format metric name (e.g. "social_awareness_expert" -> "Social Awareness Expert")
+                    readable_name = metric_name.replace("_", " ").title()
+                    pre = values.get("pre", 0)
+                    post = values.get("post", 0)
+                    delta = values.get("delta", 0)
+                    
+                    response_parts.append(
+                        f"\n- **{readable_name}**: Pre: {pre}, Post: {post} (Change: {delta:+d})"
+                    )
+            
+            response_parts.append(
+                "\n\nThis data is sourced directly from your uploaded CSV file."
+            )
+            return " ".join(response_parts)
+
+        # Fallback to original mock logic for other sources
         if "self-awareness" in question_lower or "self awareness" in question_lower:
             if data_summary.get("sel_summary"):
                 avg_self_awareness = data_summary["sel_summary"].get("average_scores", {}).get("self_awareness")

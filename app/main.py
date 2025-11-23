@@ -40,6 +40,8 @@ app = FastAPI(
     lifespan=lifespan  # Handles startup/shutdown with fail-safe behavior
 )
 
+
+
 # Configure rate limiter state
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
