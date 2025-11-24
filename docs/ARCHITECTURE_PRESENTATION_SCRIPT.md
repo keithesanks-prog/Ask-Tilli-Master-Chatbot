@@ -127,11 +127,14 @@ Think of this as the service entrance - still secure, but optimized for developm
 
 Think of this as the loading dock - specialized for a specific external integration.'
 
-**Why separate routers?**
-'Three reasons:
-1. **Security isolation** - We can apply different security policies to each router
-2. **Independent scaling** - We can rate-limit testing endpoints differently than production
-3. **Fail-safe design** - If we need to disable testing endpoints in production, we just don't register that router. Simple.'"
+**Why separate Agent Router and Query Router?**
+'You might ask: Why not just one router for everything?
+We separate them to create a **strict boundary between Production and Testing**:
+
+1. **Agent Router** is for **Educators**. It uses LLMs, has strict rate limits, and logs everything for compliance.
+2. **Query Router** is for **Developers/Admins**. It gives direct data access (no LLM), has higher rate limits for testing, and can be completely disabled in production.
+
+This separation prevents accidental data exposure and ensures testing tools don't slow down the production system.'
 
 ---
 
