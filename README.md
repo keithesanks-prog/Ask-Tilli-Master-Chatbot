@@ -72,6 +72,14 @@ graph TB
         direction TB
         FastAPI[FastAPI Application<br/>main.py]
         
+        subgraph "Security Middleware Layer"
+            Auth[Authentication<br/>Auth0/JWT]
+            RateLimit[Rate Limiting<br/>Redis]
+            Sanitizer[Input Sanitizer]
+            HarmDetect[Harmful Content<br/>Detection]
+            AccessControl[Data Access<br/>Control]
+        end
+        
         subgraph "Routers"
             AgentRouter[Agent Router<br/>/agent/ask<br/>POST /ask]
             ChatRouter[Chat Router<br/>/chat<br/>POST /chat]
@@ -141,17 +149,21 @@ graph TB
     end
     
     %% Client to API connections
-    Educator -->|HTTP POST<br/>Questions| AgentRouter
-    Educator -->|HTTP POST<br/>Chat/SEL Analysis| ChatRouter
-    Educator -->|HTTP GET<br/>Testing| QueryRouter
-    EvalTool -->|HTTP POST<br/>Evaluation Data| EvalRouter
+    Educator -->|HTTP POST| FastAPI
+    EvalTool -->|HTTP POST| FastAPI
     
     %% API Layer internal connections
-    FastAPI --> AgentRouter
-    FastAPI --> ChatRouter
-    FastAPI --> QueryRouter
-    FastAPI --> EvalRouter
-    FastAPI --> DebugRouter
+    FastAPI --> Auth
+    Auth --> RateLimit
+    RateLimit --> Sanitizer
+    Sanitizer --> HarmDetect
+    HarmDetect --> AccessControl
+    
+    AccessControl --> AgentRouter
+    AccessControl --> ChatRouter
+    AccessControl --> QueryRouter
+    AccessControl --> EvalRouter
+    AccessControl --> DebugRouter
     
     AgentRouter --> AskRequest
     ChatRouter --> ChatModels
@@ -209,7 +221,7 @@ graph TB
     classDef outputStyle fill:#f1f8e9,stroke:#689f38,stroke-width:2px,color:#111111
     
     class Educator,EvalTool clientStyle
-    class FastAPI,AgentRouter,ChatRouter,QueryRouter,EvalRouter,AskRequest,ChatModels,QueryModels,EvalModels apiStyle
+    class FastAPI,AgentRouter,ChatRouter,QueryRouter,EvalRouter,AskRequest,ChatModels,QueryModels,EvalModels,Auth,RateLimit,Sanitizer,HarmDetect,AccessControl apiStyle
     class DataRouter,SourceSelector,DataFormatter,LLMEngine,PromptBuilder,ResponseGenerator,ChatResponseGen,PromptEval,EvalProcessor serviceStyle
     class REALDB,EMTDB,SELDB,REALInput,EMTInput,SELInput dataStyle
     class GeminiAPI externalStyle
