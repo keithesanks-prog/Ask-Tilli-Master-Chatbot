@@ -74,6 +74,7 @@ graph TB
         
         subgraph "Routers"
             AgentRouter[Agent Router<br/>/agent/ask<br/>POST /ask]
+            ChatRouter[Chat Router<br/>/chat<br/>POST /chat]
             QueryRouter[Query Router<br/>/query/*<br/>GET /query/prepost]
             EvalRouter[Prompt Eval Router<br/>/prompt-eval/receive]
             DebugRouter[Debug Router<br/>/debug/pre-post]
@@ -81,6 +82,7 @@ graph TB
         
         subgraph "Request/Response Models"
             AskRequest[AskRequest<br/>AskResponse]
+            ChatModels[ChatRequest<br/>ChatResponse<br/>ChatHistoryMessage]
             QueryModels[Query Models]
             EvalModels[PromptEvalRequest<br/>PromptEvalResponse]
         end
@@ -99,6 +101,7 @@ graph TB
             LLMEngine[LLM Engine Service<br/>llm_engine.py]
             PromptBuilder[Prompt Builder<br/>build_prompt]
             ResponseGenerator[Response Generator<br/>generate_response]
+            ChatResponseGen[Chat Response Generator<br/>generate_chat_response]
         end
         
         subgraph "CSV Integration (Program-Level Aggregation)"
@@ -139,22 +142,26 @@ graph TB
     
     %% Client to API connections
     Educator -->|HTTP POST<br/>Questions| AgentRouter
+    Educator -->|HTTP POST<br/>Chat/SEL Analysis| ChatRouter
     Educator -->|HTTP GET<br/>Testing| QueryRouter
     EvalTool -->|HTTP POST<br/>Evaluation Data| EvalRouter
     
     %% API Layer internal connections
     FastAPI --> AgentRouter
+    FastAPI --> ChatRouter
     FastAPI --> QueryRouter
     FastAPI --> EvalRouter
     FastAPI --> DebugRouter
     
     AgentRouter --> AskRequest
+    ChatRouter --> ChatModels
     EvalRouter --> EvalModels
     QueryRouter --> QueryModels
     
     %% Router to Service connections
     AgentRouter -->|determine_data_sources<br/>fetch_data| DataRouter
     AgentRouter -->|generate_response| LLMEngine
+    ChatRouter -->|generate_chat_response| LLMEngine
     EvalRouter -->|process_evaluation| PromptEval
     %% Comparison-aware path
     AgentRouter -.->|if comparison intent| CSVService
@@ -166,12 +173,15 @@ graph TB
     DataRouter --> DataFormatter
     LLMEngine --> PromptBuilder
     LLMEngine --> ResponseGenerator
+    LLMEngine --> ChatResponseGen
     PromptEval --> EvalProcessor
     CSVService --> CSVExport
     
     %% Service to External Services
     LLMEngine -->|HTTPS API Call<br/>Prompt + Data| GeminiAPI
     GeminiAPI -->|Generated Response<br/>Natural Language| ResponseGenerator
+    ChatResponseGen -->|HTTPS API Call<br/>Conversation| GeminiAPI
+    GeminiAPI -->|Chat Response<br/>Natural Language| ChatResponseGen
     
     %% Service to Data Layer
     SourceSelector -->|Query| REALDB
@@ -199,14 +209,15 @@ graph TB
     classDef outputStyle fill:#f1f8e9,stroke:#689f38,stroke-width:2px,color:#111111
     
     class Educator,EvalTool clientStyle
-    class FastAPI,AgentRouter,QueryRouter,EvalRouter,AskRequest,QueryModels,EvalModels apiStyle
-    class DataRouter,SourceSelector,DataFormatter,LLMEngine,PromptBuilder,ResponseGenerator,PromptEval,EvalProcessor serviceStyle
+    class FastAPI,AgentRouter,ChatRouter,QueryRouter,EvalRouter,AskRequest,ChatModels,QueryModels,EvalModels apiStyle
+    class DataRouter,SourceSelector,DataFormatter,LLMEngine,PromptBuilder,ResponseGenerator,ChatResponseGen,PromptEval,EvalProcessor serviceStyle
     class REALDB,EMTDB,SELDB,REALInput,EMTInput,SELInput dataStyle
     class GeminiAPI externalStyle
     class EvaluationsCSV,Logs outputStyle
     class CSVService serviceStyle
     class CSVExport dataStyle
 ```
+
 
 ### System Flow Diagram
 
