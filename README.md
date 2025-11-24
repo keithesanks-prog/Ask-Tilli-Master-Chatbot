@@ -968,6 +968,80 @@ Example:
 Notes:
 - In development, the LLM uses mock responses unless `GEMINI_API_KEY` is set, but the comparison summary is still computed and passed through.
 
+### POST /chat — NEW
+
+**Conversational SEL Assessment Analysis Endpoint**
+
+This endpoint mirrors the emt-api `chat()` function structure and provides a conversational interface for analyzing SEL (Social Emotional Learning) assessment data. It supports conversation history and accepts SEL scores in the format used by Anjula's backend.
+
+**Scope for UNRWA Pilot**: This endpoint focuses on **REAL** and **SEL** assessments only. EMT (Emotion Matching Tasks) is not included in the UNRWA pilot.
+
+**Request:**
+```json
+{
+  "message": "How are students performing in self-awareness?",
+  "scores": {
+    "testType": "POST",
+    "totalStudents": 25,
+    "school": "Lincoln Elementary",
+    "assessment": "child",
+    "overall_level_distribution": {
+      "beginner": 2,
+      "growth": 10,
+      "expert": 13
+    },
+    "category_level_distributions": {
+      "self_awareness": {"beginner": 1, "growth": 8, "expert": 16},
+      "social_management": {"beginner": 3, "growth": 12, "expert": 10},
+      "social_awareness": {"beginner": 0, "growth": 7, "expert": 18},
+      "relationship_skills": {"beginner": 4, "growth": 11, "expert": 10},
+      "responsible_decision_making": {"beginner": 2, "growth": 9, "expert": 14},
+      "metacognition": {"beginner": 1, "growth": 10, "expert": 14},
+      "empathy": {"beginner": 2, "growth": 13, "expert": 10},
+      "critical_thinking": {"beginner": 3, "growth": 11, "expert": 11}
+    }
+  },
+  "history": [
+    {
+      "role": "user",
+      "text": "What are the overall trends?"
+    },
+    {
+      "role": "assistant",
+      "text": "Overall, students are showing strong performance..."
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "response": "Based on the assessment data, students are performing well in self-awareness with 16 students at expert level, 8 at growth level, and only 1 at beginner level. This represents strong foundational skills in recognizing and understanding their emotions."
+}
+```
+
+**Supported Assessments** (4 types):
+1. **child** - Picture-based SEL assessment for Grade 1 students
+2. **parent** - Caregiver questionnaire measuring SEL skills from parent's perspective
+3. **teacher_report** - Teacher-completed survey assessing SEL skills in classroom settings
+4. **teacher_survey** - Teacher self-assessment of their own SEL competencies
+
+**Features**:
+- Conversation history support for contextual responses
+- Multi-language support (English and Arabic)
+- SEL expert system instruction
+- Authentication and security measures (same as /agent/ask)
+- Harmful content detection for both questions and responses
+- Audit logging for FERPA/UNICEF compliance
+
+**Testing**:
+```bash
+python scripts/test_chat_endpoint.py
+```
+
+See [UNRWA_PILOT_CONFIG.md](UNRWA_PILOT_CONFIG.md) for configuration details.
+
 ### GET /health
 
 Basic health check endpoint.

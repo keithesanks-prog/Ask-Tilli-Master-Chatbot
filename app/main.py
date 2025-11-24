@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse, HTMLResponse
 from slowapi.errors import RateLimitExceeded
 
 from .models.query_models import AskRequest, AskResponse, HealthResponse, SecurityHealthResponse
-from .routers import agent, query, prompt_eval, test
+from .routers import agent, query, prompt_eval, test, chat
 from .routers import debug as debug_router
 from .services.data_router import DataRouter
 from .services.llm_engine import LLMEngine
@@ -115,6 +115,7 @@ app.include_router(agent.router)
 app.include_router(query.router)
 app.include_router(prompt_eval.router)
 app.include_router(test.router)
+app.include_router(chat.router)
 app.include_router(debug_router.router)
 
 
@@ -219,6 +220,7 @@ async def root():
         "description": "Master Agent service for Tilli - answers educator questions using assessment data",
         "endpoints": {
             "ask": "/ask (also available at /agent/ask)",
+            "chat": "/chat (conversational SEL assessment analysis)",
             "health": "/health (basic health check)",
             "health_security": "/health/security (comprehensive security health check)",
             "query_sources": "/query/sources",

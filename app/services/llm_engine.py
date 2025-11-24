@@ -3,7 +3,7 @@ LLM Engine Service
 
 Handles prompt construction and LLM API calls for generating natural language responses.
 """
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import json
 import os
 import logging
@@ -196,6 +196,63 @@ class LLMEngine:
         mock_response = self._generate_mock_response(question, data_summary, data_sources)
         
         return mock_response
+    
+    def generate_chat_response(
+        self,
+        conversation: List[str],
+        max_tokens: int = 500
+    ) -> str:
+        """
+        Generate a chat response using conversation history.
+        
+        This method is designed for the /chat endpoint that mirrors the emt-api structure.
+        It accepts a pre-built conversation context (list of strings) and generates a response.
+        
+        Args:
+            conversation: List of conversation strings (system instruction, history, current message)
+            max_tokens: Maximum tokens for the response
+            
+        Returns:
+            Generated natural language response
+        """
+        # Join conversation into a single prompt
+        prompt = "\n".join(conversation)
+        
+        # Try to use Gemini API if enabled
+        if self.gemini_enabled and self.model:
+            try:
+                logger.debug(f"Generating chat response with Gemini API (model: {self.model_name})")
+                
+                # Configure generation parameters
+                generation_config = {
+                    "max_output_tokens": max_tokens,
+                    "temperature": 0.7,
+                    "top_p": 0.95,
+                    "top_k": 40,
+                }
+                
+                # Generate response from Gemini
+                response = self.model.generate_content(
+                    prompt,
+                    generation_config=generation_config
+                )
+                
+                if response and response.text:
+                    response_text = response.text.strip()
+                    logger.debug("Successfully generated chat response from Gemini API")
+                    return response_text
+                else:
+                    logger.warning("Gemini API returned empty response for chat")
+                    return "I apologize, but I'm unable to generate a response at this time. Please try again."
+                    
+            except Exception as e:
+                logger.error(f"Error calling Gemini API for chat: {str(e)}")
+                return "I encountered an error processing your request. Please try again."
+        
+        # Fallback if Gemini is not available
+        logger.warning("Gemini API not available for chat endpoint")
+        return "Chat functionality requires Gemini API configuration. Please contact your administrator."
+
     
     def _generate_mock_response(
         self,

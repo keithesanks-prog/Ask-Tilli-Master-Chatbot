@@ -33,40 +33,40 @@ The Master Chatbot is a **multi-layered, secure API service** that provides educ
        ▼
 ┌─────────────────────────────────────────┐
 │         FastAPI Application             │
-│  ┌────────────────────────────────┐    │
-│  │   Security Middleware Layer    │    │
-│  │  • TLS/HTTPS                   │    │
-│  │  • Authentication (JWT)        │    │
-│  │  • Rate Limiting               │    │
-│  │  • Input Sanitization          │    │
-│  │  • Harmful Content Detection   │    │
-│  │  • Data Access Control         │    │
-│  └────────────────────────────────┘    │
+│  ┌────────────────────────────────┐     │
+│  │   Security Middleware Layer    │     │
+│  │  • TLS/HTTPS                   │     │
+│  │  • Authentication (JWT)        │     │
+│  │  • Rate Limiting               │     │
+│  │  • Input Sanitization          │     │
+│  │  • Harmful Content Detection   │     │
+│  │  • Data Access Control         │     │
+│  └────────────────────────────────┘     │
 │                                         │
-│  ┌────────────────────────────────┐    │
-│  │      Router Layer              │    │
-│  │  • Agent Router (/agent/ask)   │    │
-│  │  • Query Router (/query/*)     │    │
-│  │  • Prompt Eval Router          │    │
-│  └────────────────────────────────┘    │
+│  ┌────────────────────────────────┐     │
+│  │      Router Layer              │     │
+│  │  • Agent Router (/agent/ask)   │     │
+│  │  • Query Router (/query/*)     │     │
+│  │  • Prompt Eval Router          │     │
+│  └────────────────────────────────┘     │
 │                                         │
-│  ┌────────────────────────────────┐    │
-│  │      Service Layer             │    │
-│  │  • Data Router                 │    │
-│  │  • LLM Engine                  │    │
-│  │  • CSV Data Service            │    │
-│  │  • Audit Logger                │    │
-│  └────────────────────────────────┘    │
+│  ┌────────────────────────────────┐     │
+│  │      Service Layer             │     │
+│  │  • Data Router                 │     │
+│  │  • LLM Engine                  │     │
+│  │  • CSV Data Service            │     │
+│  │  • Audit Logger                │     │
+│  └────────────────────────────────┘     │
 └─────────────────────────────────────────┘
        │
        ▼
 ┌─────────────────────────────────────────┐
 │         Data Layer                      │
-│  • REAL Data (student records)         │
-│  • EMT Data (emotion matching)         │
-│  • SEL Data (social-emotional)         │
-│  • CSV Exports (aggregated)            │
-│  • Access Control DB (SQLite)          │
+│  • REAL Data (student records)          │
+│  • EMT Data (emotion matching)          │
+│  • SEL Data (social-emotional)          │
+│  • CSV Exports (aggregated)             │
+│  • Access Control DB (SQLite)           │
 └─────────────────────────────────────────┘
 ```
 
@@ -300,31 +300,31 @@ Layer 7: Audit Logging (compliance)
 
 ```
 ┌─────────────────────────────────────────┐
-│  Educator Authentication (JWT)         │
-│  • user_id: "educator_alice"           │
-│  • role: "educator"                    │
-│  • school_id: "school_1"               │
+│  Educator Authentication (JWT)          │
+│  • user_id: "educator_alice"            │
+│  • role: "educator"                     │
+│  • school_id: "school_1"                │
 └────────────┬────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────┐
 │  Data Access Middleware                 │
-│  1. Check if user is admin             │
-│     → YES: Allow (school-scoped)       │
-│     → NO: Continue to step 2           │
-│  2. Check educator-student relationship│
-│     → Query: educator_classrooms       │
-│     → Query: student_classrooms        │
-│     → Check overlap                    │
-│  3. Allow or Deny (403 Forbidden)      │
+│  1. Check if user is admin              │
+│     → YES: Allow (school-scoped)        │
+│     → NO: Continue to step 2            │
+│  2. Check educator-student relationship │
+│     → Query: educator_classrooms        │
+│     → Query: student_classrooms         │
+│     → Check overlap                     │
+│  3. Allow or Deny (403 Forbidden)       │
 └────────────┬────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────┐
 │  Audit Logger                           │
-│  • Log access granted/denied           │
-│  • Include purpose (UNICEF requirement)│
-│  • Immutable, append-only              │
+│  • Log access granted/denied            │
+│  • Include purpose (UNICEF requirement) │
+│  • Immutable, append-only               │
 └─────────────────────────────────────────┘
 ```
 
