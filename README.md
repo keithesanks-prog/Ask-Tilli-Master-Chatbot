@@ -224,8 +224,11 @@ graph TB
 ```mermaid
 graph TB
     %% External Inputs
-    Educator[Educator Question] --> API[FastAPI Endpoint<br/>POST /ask or /agent/ask]
-    ChatClient[Chat Client] --> ChatAPI[FastAPI Endpoint<br/>POST /chat]
+    Educator[Educator Question] --> Security[Security Middleware<br/>TLS, Auth, Rate Limit,<br/>Sanitization, Harm Detection]
+    ChatClient[Chat Client] --> Security
+    
+    Security --> API[FastAPI Endpoint<br/>POST /ask or /agent/ask]
+    Security --> ChatAPI[FastAPI Endpoint<br/>POST /chat]
     
     %% Data Sources
     REALInput[REAL Evaluation Inputs] --> REALTable[(REAL Data Table)]
@@ -269,7 +272,7 @@ graph TB
     classDef outputStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#111111
     
     class Educator,ChatClient,REALInput,EMTInput,SELInput inputStyle
-    class API,ChatAPI,Router,LLMEngine,Prompt,ChatPrompt,Gemini,EvalEndpoint,EvalService processStyle
+    class API,ChatAPI,Router,LLMEngine,Prompt,ChatPrompt,Gemini,EvalEndpoint,EvalService,Security processStyle
     class REALTable,EMTTable,SELTable dataStyle
     class Response,ChatResponse,CSV outputStyle
 ```
