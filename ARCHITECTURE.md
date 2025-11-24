@@ -46,6 +46,7 @@ The Master Chatbot is a **multi-layered, secure API service** that provides educ
 │  ┌────────────────────────────────┐     │
 │  │      Router Layer              │     │
 │  │  • Agent Router (/agent/ask)   │     │
+│  │  • Chat Router (/chat)         │     │
 │  │  • Query Router (/query/*)     │     │
 │  │  • Prompt Eval Router          │     │
 │  └────────────────────────────────┘     │

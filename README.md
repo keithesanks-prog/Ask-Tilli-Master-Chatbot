@@ -225,13 +225,14 @@ graph TB
 graph TB
     %% External Inputs
     Educator[Educator Question] --> API[FastAPI Endpoint<br/>POST /ask or /agent/ask]
+    ChatClient[Chat Client] --> ChatAPI[FastAPI Endpoint<br/>POST /chat]
     
     %% Data Sources
     REALInput[REAL Evaluation Inputs] --> REALTable[(REAL Data Table)]
     EMTInput[EMT Assignment Inputs] --> EMTTable[(EMT Data Table)]
     SELInput[SEL Assignment Inputs] --> SELTable[(SEL Data Table)]
     
-    %% Main Processing Flow
+    %% Main Processing Flow (Agent/Ask)
     API --> Router[Data Router<br/>Table Selector]
     Router --> |Determines Sources| REALTable
     Router --> |Determines Sources| EMTTable
@@ -248,6 +249,14 @@ graph TB
     Response --> |Returns| API
     API --> |JSON Response| Educator
     
+    %% Chat Flow
+    ChatAPI --> |Conversation History| LLMEngine
+    LLMEngine --> |Builds Chat Prompt| ChatPrompt[Chat Prompt<br/>with History]
+    ChatPrompt --> |Sends to| Gemini
+    Gemini --> |Generates| ChatResponse[Chat Response]
+    ChatResponse --> |Returns| ChatAPI
+    ChatAPI --> |JSON Response| ChatClient
+    
     %% Prompt Eval Tool Flow
     EvalTool[Prompt Eval Tool<br/>External Service] --> |Sends Evaluation Data| EvalEndpoint[POST /prompt-eval/receive]
     EvalEndpoint --> |Processes| EvalService[Prompt Eval Service]
@@ -259,10 +268,10 @@ graph TB
     classDef dataStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#111111
     classDef outputStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#111111
     
-    class Educator,REALInput,EMTInput,SELInput inputStyle
-    class API,Router,LLMEngine,Prompt,Gemini,EvalEndpoint,EvalService processStyle
+    class Educator,ChatClient,REALInput,EMTInput,SELInput inputStyle
+    class API,ChatAPI,Router,LLMEngine,Prompt,ChatPrompt,Gemini,EvalEndpoint,EvalService processStyle
     class REALTable,EMTTable,SELTable dataStyle
-    class Response,CSV outputStyle
+    class Response,ChatResponse,CSV outputStyle
 ```
 
 ### Component Architecture Diagram
