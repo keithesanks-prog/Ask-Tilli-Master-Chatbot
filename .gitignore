@@ -31,7 +31,7 @@ Thumbs.db
 ## Local/dev artifacts
 *.log
 *.csv
-.gitignore
+#.gitignore
 
 # Keep exported datasets under data/
 !data/*.csv
@@ -128,3 +128,7 @@ dmypy.json
 .pyre/
 
 
+# ElevenLabs integration
+scripts/*.py          # any scripts that contain the ElevenLabs API key
+docs/audio/          # generated audio files
+*.elevenlabs         # any other ElevenLabs‑related files
